@@ -1,0 +1,66 @@
+[v-cloak] {
+  display: none;
+}
+
+.loadParent {
+  position: relative;
+  min-width: 100%;
+  min-height: 100px;
+}
+
+.WrapContent {
+  position: relative;
+}
+.WrapContent .card {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.WrapContent button.link_button {
+  outline: none;
+  border: none;
+  background: inherit;
+  max-width: 40px;
+  position: absolute;
+  top: 50%;
+  margin-top: -20px;
+  cursor: pointer;
+}
+.WrapContent button.link_button img {
+  max-width: 100%;
+  height: auto;
+}
+.WrapContent button.downMy {
+  left: 0;
+}
+.WrapContent button.topMy {
+  right: 0;
+}
+.WrapContent button[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.WrapContent .WrapLeftRight button.link_button_lr {
+  outline: none;
+  border: none;
+  background: inherit;
+  max-width: 40px;
+  cursor: pointer;
+}
+.WrapContent .WrapLeftRight button.link_button_lr img {
+  max-width: 100%;
+  height: auto;
+}
+
+.WrapCalendar .card {
+  padding: 0 10px;
+}
+
+.NavWrap svg {
+  max-width: 50px;
+  height: auto;
+}
+
+button:disabled {
+  cursor: not-allowed !important;
+  pointer-events: all !important;
+}

@@ -1,0 +1,65 @@
+<template>
+    <div>
+        <h5>Поділиться:</h5>
+        <div class="ShareWrap d-flex flex-wrap  justify-content-between">
+            <ShareNetwork
+                network="facebook"
+                :url="url"
+                :title="title"
+                :description="description"
+            >
+                Facebook
+            </ShareNetwork>
+            <ShareNetwork
+                network="WhatsApp"
+                :url="url"
+                :title="title"
+                :description="description"
+            >
+                WhatsApp
+            </ShareNetwork>
+            <ShareNetwork
+                network="Telegram"
+                :url="url"
+                :title="title"
+                :description="description"
+            >
+                Telegram
+            </ShareNetwork>
+            <ShareNetwork
+                network="Viber"
+                :url="url"
+                :title="title"
+                :description="description"
+            >
+                Viber
+            </ShareNetwork>
+
+            <ShareNetwork
+                network="Twitter"
+                :url="url"
+                :title="title"
+                :description="description"
+            >
+                Twitter
+            </ShareNetwork>
+            <ShareNetwork
+                network="SMS"
+                :url="url"
+                :title="title"
+                :description="description"
+            >
+                SMS
+            </ShareNetwork>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "Share",
+        props:[
+           'url','title','description'
+        ]
+    }
+</script>
