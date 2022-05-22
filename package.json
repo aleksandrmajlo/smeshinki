@@ -28,6 +28,7 @@
         "vue-core-video-player": "^0.2.0",
         "vue-image-preloader": "^0.2.8",
         "vue-loading-overlay": "^3.4.2",
-        "vue-social-sharing": "^3.0.9"
+        "vue-social-sharing": "^3.0.9",
+        "vue-star-rating": "^1.7.0"
     }
 }

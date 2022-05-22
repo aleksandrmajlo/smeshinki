@@ -16,6 +16,7 @@
                 :attributes="attrs"
                 is-expanded
             />
+            <a href="/calendar"  v-show="date_read!=''" class="h4 text-center mt-3">{{date_read}}</a>
             <post :items="items" :url="url"></post>
         </div>
     </div>
@@ -37,6 +38,7 @@
                 masks: {
                     input: "YYYY-MM-DD",
                 },
+                date_read:'',// дата которую пишем
                 items: [],// записи
                 url:'',// урл страницы даты
                 isLoading: true,
@@ -64,6 +66,7 @@
         },
         methods: {
             onDayClick(day) {
+                this.date_read=day.ariaLabel;
                 if (typeof day.attributes[0] != "undefined") {
                     this.isLoading = true;
                     axios
@@ -73,6 +76,7 @@
                         .then((res) => {
                             this.items = res.data.posts;
                             this.url = res.data.url;
+                            console.log(day.ariaLabel)
                         })
                         .catch((err) => {
                             console.error(err);

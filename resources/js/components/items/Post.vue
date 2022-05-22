@@ -1,7 +1,9 @@
 <template>
-    <div class=" mb-3 mt-5">
-        <div v-for="(item, index) in items" :key="index" class="mb-5">
-            <h5 class="text-center">{{ item.title }}</h5>
+    <div class=" mb-3 mt-3">
+
+        <div v-for="(item, index) in items" :key="item.id" class="mb-2 text-center">
+            <a :href="url+'#id'+item.id" class="text-center">{{ item.title }}</a>
+<!--
             <span v-html="item.text"></span>
             <div
                 v-show="item.photo"
@@ -27,10 +29,11 @@
             <span v-else>
                     <share :url="loadImg(item.photo)" :title="item.show_title?item.title:''" :description="item.show_title?item.description:''"/>
             </span>
+            -->
         </div>
         <div class="text-center">
             <p v-show="items.length<1" class="text-info">Привітаннь немає</p>
-            <a v-show="items&&items.length>0" class="btn btn-outline-info" :href="url">Переглянути всі привітання</a>
+            <!-- <a v-show="items&&items.length>0" class="btn btn-outline-info" :href="url">Переглянути всі привітання</a> -->
         </div>
     </div>
 </template>

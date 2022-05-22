@@ -8,6 +8,8 @@ use App\Models\Post;
 use App\Models\Calendar;
 use App\Models\Typecalendar;
 use App\Models\Word;
+use Illuminate\Support\Facades\Auth;
+
 
 class HomeController extends Controller
 {
@@ -17,9 +19,45 @@ class HomeController extends Controller
             ->set('title', __('site.home'))
             ->set('description', __('site.home_desc'));
         $data_type=Typecalendar::all();
-        return view('home', [
+        return view('index', [
             'data_type'=>$data_type
         ]);
+    }
+    // домашняя страница
+    public function home(){
+        if(Auth::user()){
+            meta()
+                ->set('title','Вибране')
+                ->set('description','Вибране');
+            $isFav = [];
+            $favs = \DB::table('post_user')
+                ->where('user_id', Auth::user()->id)
+                ->get('post_id');
+            if ($favs) {
+                foreach ($favs as $fav) {
+                    $isFav[] = $fav->post_id;
+                }
+            }
+            $sort=  session('sort','rating');
+            if($sort=='new_end'){
+                $posts=Post::orderBy('created_at','desc')->whereIn('id', $isFav)->get();
+            }elseif($sort=='end_new'){
+                $posts=Post::orderBy('created_at')->whereIn('id', $isFav)->get();
+            }
+            else{
+                $posts=Post::orderBy('rating_avg','desc')->whereIn('id', $isFav)->get();
+            }
+            return view('home',[
+                'posts' => $posts,
+                'url' => env('APP_URL'),
+                'sort'=>$sort,
+                'isFav' => $isFav,
+            ]);
+        }else{
+            return abort('403');
+        }
+
+
     }
 
     // получить даты календаря

@@ -38,8 +38,29 @@ class Calendar extends Model
 
     public function getDateWriteAttribute($value)
     {
+        $ar_uk=[
+          '1'=>'cіченя',
+          '2'=>'лютого',
+          '3'=>'березня',
+          '4'=>'квітеня',
+          '5'=>'травня',
+          '6'=>'червня',
+          '7'=>'липня',
+          '8'=>'серпня',
+          '9'=>'вересня',
+          '10'=>'жовтня',
+          '11'=>'листопада',
+          '12'=>'грудня',
+        ];
         $date=new Carbon($this->date);
-        $date_only = $date->formatLocalized( '%d.%m.%Y');
-        return $date_only;
+        $day=$date->day;
+        if($day<10){
+            $day='0'.$day;
+        }
+        $month=$date->month;
+        $year=$date->year;
+        return $day.' '.$ar_uk[$month].' '.$year;
     }
+
+
 }

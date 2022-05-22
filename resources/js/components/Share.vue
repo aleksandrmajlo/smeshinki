@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <h5>Поділиться:</h5>
         <div class="ShareWrap d-flex flex-wrap  justify-content-between">
             <ShareNetwork
@@ -8,7 +9,7 @@
                 :title="title"
                 :description="description"
             >
-                Facebook
+                <i   class="fab fa-facebook-f"></i>
             </ShareNetwork>
             <ShareNetwork
                 network="WhatsApp"
@@ -16,7 +17,7 @@
                 :title="title"
                 :description="description"
             >
-                WhatsApp
+                <i class="fab fa-whatsapp" aria-hidden="true"></i>
             </ShareNetwork>
             <ShareNetwork
                 network="Telegram"
@@ -24,7 +25,7 @@
                 :title="title"
                 :description="description"
             >
-                Telegram
+                <i class="fab fa-telegram" aria-hidden="true"></i>
             </ShareNetwork>
             <ShareNetwork
                 network="Viber"
@@ -41,7 +42,7 @@
                 :title="title"
                 :description="description"
             >
-                Twitter
+                <i class="fab fa-twitter"></i>
             </ShareNetwork>
             <ShareNetwork
                 network="SMS"
@@ -49,17 +50,20 @@
                 :title="title"
                 :description="description"
             >
-                SMS
+            SMS
             </ShareNetwork>
         </div>
     </div>
 </template>
 
 <script>
+
     export default {
         name: "Share",
+
         props:[
-           'url','title','description'
-        ]
+           'url','title','description','post_id'
+        ],
+
     }
 </script>

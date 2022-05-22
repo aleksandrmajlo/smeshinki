@@ -7,6 +7,7 @@ use AdminColumnFilter;
 use AdminDisplay;
 use AdminForm;
 use AdminFormElement;
+use AdminColumnEditable;
 use Illuminate\Database\Eloquent\Model;
 use SleepingOwl\Admin\Contracts\Display\DisplayInterface;
 use SleepingOwl\Admin\Contracts\Form\FormInterface;
@@ -58,11 +59,12 @@ class Post extends Section implements Initializable
     {
         $columns = [
             AdminColumn::text('id', '#')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::link('title', 'Назва')->setSearchCallback(function ($column, $query, $search) {
-                return $query ->orWhere('title', 'like', '%' . $search . '%');
-            })->setOrderable(function ($query, $direction) {
-                $query->orderBy('created_at', $direction);
-            })->setHtmlAttribute('class', 'text-center'),
+//            AdminColumn::link('title', 'Назва')->setSearchCallback(function ($column, $query, $search) {
+//                return $query ->orWhere('title', 'like', '%' . $search . '%');
+//            })->setOrderable(function ($query, $direction) {
+//                $query->orderBy('created_at', $direction);
+//            })->setHtmlAttribute('class', 'text-center'),
+            AdminColumnEditable::text('title')->setLabel('Назва')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::text('calendar.date', 'Дата свята')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::text('calendar.title', 'Назва свята')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::custom("Тип календаря", function(\Illuminate\Database\Eloquent\Model $model) {
