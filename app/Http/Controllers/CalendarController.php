@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Typecalendar;
 use Illuminate\Http\Request;
 use App\Models\Calendar;
 use Illuminate\Support\Facades\Auth;
@@ -10,28 +11,35 @@ use Illuminate\Support\Facades\Auth;
 
 class CalendarController extends Controller
 {
-    public function index(){
+    // страница календаря общая
+    public function index()
+    {
         meta()
             ->set('title', 'Календар')
-            ->set('description','Календар');
-       return view('calendar.index',[]);
+            ->set('description', 'Календар');
+        $sort = session('sort', 'rating');
+        $data_type=Typecalendar::all();
+        return view('calendar.index', [
+            'sort' => $sort,
+            'data_type'=>$data_type
+        ]);
     }
+
+    // страница конкретной даты
     public function show(Calendar $calendar)
     {
-        $limit = 30;
+        $limit = config('app.limit');
         meta()
             ->set('title', $calendar->meta_title)
             ->set('description', $calendar->meta_description);
 
-//        $posts = $calendar->posts()->orderBy('posts.rating_avg')->paginate($limit);
-        $sort=  session('sort','rating');
-        if($sort=='new_end'){
-            $posts=Post::orderBy('created_at','desc')->where('calendar_id',$calendar->id)->paginate($limit);
-        }elseif($sort=='end_new'){
-            $posts=Post::orderBy('created_at')->where('calendar_id',$calendar->id)->paginate($limit);
-        }
-        else{
-            $posts=Post::orderBy('rating_avg','desc')->where('calendar_id',$calendar->id)->paginate($limit);
+        $sort = session('sort', 'rating');
+        if ($sort == 'new_end') {
+            $posts = Post::orderBy('created_at', 'desc')->active()->where('calendar_id', $calendar->id)->paginate($limit);
+        } elseif ($sort == 'end_new') {
+            $posts = Post::orderBy('created_at')->active()->where('calendar_id', $calendar->id)->paginate($limit);
+        } else {
+            $posts = Post::orderBy('rating_avg', 'desc')->active()->where('calendar_id', $calendar->id)->paginate($limit);
         }
         $isFav = [];
         if (Auth::user()) {
@@ -49,13 +57,14 @@ class CalendarController extends Controller
             'posts' => $posts,
             'url' => env('APP_URL'),
             'isFav' => $isFav,
-            'sort'=>$sort
+            'sort' => $sort
         ]);
     }
 
     // установка сортировки
-    public function sort(Request $request){
-        session(['sort' =>$request->sort]);
+    public function sort(Request $request)
+    {
+        session(['sort' => $request->sort]);
         return redirect()->back();
     }
 }

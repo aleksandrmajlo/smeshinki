@@ -21,6 +21,8 @@ Vue.component('Word', require('./components/Word.vue').default);
 Vue.component('Share', require('./components/Share.vue').default);
 Vue.component('Rating', require('./components/Rating.vue').default);
 Vue.component('MyFavorites', require('./components/MyFavorites.vue').default);
+Vue.component('PostsAll', require('./components/PostsAll.vue').default);
+
 export const eventBus = new Vue();
 const app = new Vue({
     el: '#app',

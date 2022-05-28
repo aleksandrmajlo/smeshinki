@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('words', function (Blueprint $table) {
             $table->boolean('show_title')->default(0)->comment('показать описание');;
+            $table->boolean('status')->default(1);
         });
     }
 

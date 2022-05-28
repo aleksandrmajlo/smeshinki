@@ -68,7 +68,6 @@ class Calendar extends Section implements Initializable
 
 
         ];
-
         $display = AdminDisplay::datatables()
             ->setName('firstdatatables')
             ->setOrder([[0, 'desc']])
@@ -76,7 +75,6 @@ class Calendar extends Section implements Initializable
             ->paginate(25)
             ->setColumns($columns)
             ->setHtmlAttribute('class', 'table-primary table-hover th-center');
-
         return $display;
     }
 

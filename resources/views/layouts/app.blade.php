@@ -109,7 +109,7 @@
     <main class="my-5">
         <div class="container">
             <section >
-        @yield('content')
+              @yield('content')
             </section>
         </div>
     </main>

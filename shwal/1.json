@@ -1,0 +1,50 @@
+{
+    "update_id": 429753258,
+    "channel_post": {
+        "message_id": 32,
+        "sender_chat": {
+            "id": -1001538226262,
+            "title": "TestChan",
+            "username": "testchanRt",
+            "type": "channel"
+        },
+        "chat": {
+            "id": -1001538226262,
+            "title": "TestChan",
+            "username": "testchanRt",
+            "type": "channel"
+        },
+        "date": 1653648158,
+        "photo": [
+            {
+                "file_id": "AgACAgIAAx0CW694VgADIGKQqx3FqQFpjQd1gU48NYhWntEJAAI6vjEbPqOJSGCiB0DlPo95AQADAgADcwADJAQ",
+                "file_unique_id": "AQADOr4xGz6jiUh4",
+                "file_size": 1598,
+                "width": 70,
+                "height": 90
+            },
+            {
+                "file_id": "AgACAgIAAx0CW694VgADIGKQqx3FqQFpjQd1gU48NYhWntEJAAI6vjEbPqOJSGCiB0DlPo95AQADAgADbQADJAQ",
+                "file_unique_id": "AQADOr4xGz6jiUhy",
+                "file_size": 21246,
+                "width": 248,
+                "height": 320
+            },
+            {
+                "file_id": "AgACAgIAAx0CW694VgADIGKQqx3FqQFpjQd1gU48NYhWntEJAAI6vjEbPqOJSGCiB0DlPo95AQADAgADeAADJAQ",
+                "file_unique_id": "AQADOr4xGz6jiUh9",
+                "file_size": 96618,
+                "width": 621,
+                "height": 800
+            },
+            {
+                "file_id": "AgACAgIAAx0CW694VgADIGKQqx3FqQFpjQd1gU48NYhWntEJAAI6vjEbPqOJSGCiB0DlPo95AQADAgADeQADJAQ",
+                "file_unique_id": "AQADOr4xGz6jiUh-",
+                "file_size": 137743,
+                "width": 960,
+                "height": 1237
+            }
+        ],
+        "caption": "8888888"
+    }
+}

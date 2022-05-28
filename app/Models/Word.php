@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+
 class Word extends Model
 {
     use HasFactory;
@@ -18,12 +19,17 @@ class Word extends Model
         ];
     }
 
-    public function setTitleAttribute($v){
-        if(is_null($v)){
-            $this->attributes['title']='Не вказана';
-        }else{
-            $this->attributes['title']=$v;
+    public function setTitleAttribute($v)
+    {
+        if (is_null($v)) {
+            $this->attributes['title'] = 'Не вказана';
+        } else {
+            $this->attributes['title'] = $v;
         }
     }
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
 }

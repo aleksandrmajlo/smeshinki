@@ -1,4 +1,4 @@
-<div class="col-lg-4 col-md-12 mb-4">
+<div class="col-lg-4 col-md-12 mb-4" id="id{{$post->id}}">
     <div class="card">
         @if($post->photo)
             <div class="bg-image hover-overlay ripple mb-3" data-mdb-ripple-color="light">
@@ -36,6 +36,13 @@
                 <share url="{{$url}}/{{$post->video}}" title="{{$post->title}}" description="{{$post->text}}" post_id="{{$post->id}}"></share>
             @else
                 <share url="{{$url}}/{{$post->photo}}" title="{{$post->title}}" description="{{$post->text}}" post_id="{{$post->id}}"></share>
+            @endif
+
+            @if(isset($linkCatalog))
+                <div class="mt-3 w-100">
+                    <a href="/calendar/{{$post->calendar->slug}}#{{$post->id}}"
+                       class="btn  btn-outline-primary w-100">Перейти до дати {{$post->calendar->date_write}}</a>
+                </div>
             @endif
 
         </div>

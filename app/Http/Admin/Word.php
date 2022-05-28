@@ -7,6 +7,7 @@ use AdminColumnFilter;
 use AdminDisplay;
 use AdminForm;
 use AdminFormElement;
+use AdminColumnEditable;
 use Illuminate\Database\Eloquent\Model;
 use SleepingOwl\Admin\Contracts\Display\DisplayInterface;
 use SleepingOwl\Admin\Contracts\Form\FormInterface;
@@ -34,7 +35,7 @@ class Word extends Section implements Initializable
     /**
      * @var string
      */
-    protected $title = 'Записи';
+    protected $title = 'Записи з telegram';
 
     /**
      * @var string
@@ -77,6 +78,7 @@ class Word extends Section implements Initializable
                    return 'Не загружено';
                 }
             })->setWidth('150px')->setHtmlAttribute('class', 'text-center'),
+            AdminColumnEditable::checkbox('status')->setLabel('Опублікувати'),
             AdminColumn::text('created_at', 'Створено/оновлено', 'updated_at')
                 ->setOrderable(function ($query, $direction) {
                     $query->orderBy('updated_at', $direction);
@@ -113,6 +115,7 @@ class Word extends Section implements Initializable
                 AdminFormElement::text('meta_title', 'meta_title(SEO)')->required(),
                 AdminFormElement::textarea('meta_description', 'meta_description(SEO)')->required(),
                 AdminFormElement::text('slug', 'slug(SEO)')->setReadOnly(true),
+                AdminFormElement::checkbox('status', 'Опублікувати'),
             ])
         ]);
         $form->getButtons()->setButtons([

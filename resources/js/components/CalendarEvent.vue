@@ -16,13 +16,13 @@
                 :attributes="attrs"
                 is-expanded
             />
-            <a href="/calendar"  v-show="date_read!=''" class="h4 text-center mt-3">{{date_read}}</a>
+            <a href="/calendar"  v-show="date_read!=''" class="h5 text-center mt-3">{{date_read}}</a>
             <post :items="items" :url="url"></post>
         </div>
     </div>
 </template>
 <script>
-    import DatePicker from "v-calendar/lib/components/date-picker.umd";
+     import DatePicker from "v-calendar/lib/components/date-picker.umd";
     import Loading from "vue-loading-overlay";
     import "vue-loading-overlay/dist/vue-loading.css";
     import Post from "./items/Post"
@@ -56,7 +56,10 @@
         created() {
             this.datatypes=JSON.parse(this.datatype);
             this.typecalendar=this.datatypes[0].id;
-            this.setDate();
+        },
+        mounted(){
+            this.date=new Date();
+            this.loadSetDate();
         },
         watch: {
             typecalendar(){
@@ -76,10 +79,8 @@
                         .then((res) => {
                             this.items = res.data.posts;
                             this.url = res.data.url;
-                            console.log(day.ariaLabel)
                         })
                         .catch((err) => {
-                            console.error(err);
                         })
                         .then(() => {
                             this.isLoading = false;
@@ -87,6 +88,24 @@
                 } else {
                     this.items = [];
                 }
+            },
+            // получить сегодняшние поздравления
+            loadSetDate(){
+                    this.isLoading=true;
+                    this.date_read=this.dateLoc(this.date);
+                    axios
+                        .post("/getPostToday", {
+                             typecalendar:this.typecalendar
+                        })
+                        .then((res) => {
+                            this.items = res.data.posts;
+                            this.url = res.data.url;
+                        })
+                        .catch((err) => {
+                        })
+                        .then(() => {
+                            this.isLoading = false;
+                        });
             },
             setDate() {
                 this.isLoading=true;
@@ -112,6 +131,7 @@
                                 customData: el.id,
                             };
                             this.attrs.push(todo);
+
                         });
                     })
                     .catch((err) => {
@@ -121,6 +141,17 @@
                         this.isLoading=false;
                     })
             },
+            dateLoc(date){
+                let res='';
+                let months = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+                let nominative = ['неділя', 'понеділок', 'вівторок', 'середа', 'четвер', 'п’ятниця', 'субота'];
+                let month=date.getMonth();
+                let d=date.getDate();
+                let day=date.getDay();
+                let year=date.getFullYear();
+                res=nominative[day]+', '+d+' '+ months[month]+' '+year+ ' р.';
+                return res;
+            }
         },
     };
 </script>

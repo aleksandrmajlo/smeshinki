@@ -50,4 +50,9 @@ class User extends Authenticatable
         return $this->role == 'user';
     }
 
+    public function welcomes()
+    {
+        return $this->hasMany(Welcome::class);
+    }
+
 }

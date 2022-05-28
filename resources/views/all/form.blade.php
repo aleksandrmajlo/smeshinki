@@ -19,6 +19,16 @@
             @else
             @endguest
             <div class="row mb-3">
+                <label for="date" class="col-md-2 col-form-label text-md-end">Дата</label>
+                <div class="col-md-10">
+                    <select class="form-control" name="calendar_id" required>
+                        @foreach($calendarForm  as $item)
+                            <option value="{{$item->id}}">{{$item->date}} - {{$item->title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
                 <label for="welcome" class="col-md-2 col-form-label text-md-end">Привітання</label>
                 <div class="col-md-10">
                     <textarea name="welcome" class="form-control " required></textarea>

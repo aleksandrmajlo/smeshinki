@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Anecdote;
 use App\Models\Post;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    // главная
     public function index()
     {
         meta()
@@ -52,6 +54,7 @@ class HomeController extends Controller
                 'url' => env('APP_URL'),
                 'sort'=>$sort,
                 'isFav' => $isFav,
+                'linkCatalog'=>1
             ]);
         }else{
             return abort('403');
@@ -92,6 +95,19 @@ class HomeController extends Controller
         ]);
     }
 
+    // получить записи для данного дня
+    public function getPostToday(Request $request){
+       $typecalendar=$request->typecalendar;
+       $calendar=Calendar::where('typecalendar_id',$typecalendar)
+                           ->whereDate('date', Carbon::today())
+                           ->first();
+        $posts = $calendar->limitposts;
+        return response()->json([
+            'posts'=> $posts,
+            'url'=> $calendar->url
+        ]);
+    }
+
     // получить анедот
     public function getAnecdote(Request $request)
     {
@@ -115,8 +131,8 @@ class HomeController extends Controller
     // получаем картинки
     public function getWord(Request $request)
     {
-        $limit=10;
-        return Word::orderBy('id', 'desc')->paginate($limit);
+        $limit = config('app.limit');
+        return Word::orderBy('id', 'desc')->active()->paginate($limit);
 
     }
 }

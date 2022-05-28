@@ -1,16 +1,14 @@
 <template>
     <div class="WrapContent">
         <loading :active.sync="isLoading" :is-full-page="fullPage"/>
-
         <div class="card" v-cloak>
-
             <button
-                class="link_button downMy"
+                class="link_button  downMy"
                 :disabled="disabledDown"
-                @click.prevent="down">
+                @click.prevent="down()">
                 <img src="/img/down.png"/>
             </button>
-            <div class="PaginationMy text-center mb-3">Сторінка {{page}} з {{total}} (показано {{items.length}} публікації)</div>
+            <div class="PaginationMy text-center mb-3">Сторінка {{page}} з {{total}} (показано {{items.length}} публікацій)</div>
             <div  class="WrapLeftRight d-flex justify-content-between mb-3 ">
                 <button
                     class="link_button_lr leftMy"
@@ -47,7 +45,7 @@
                     ></vue-core-video-player>
                 </div>
                 <div class="card-body mb-2" v-show="item.show_title">
-                    <h5 class="card-title">{{ item.title }}</h5>
+                    <h5 v-show="item.title.search('Telegram')==-1" class="card-title">{{ item.title }}</h5>
                     <span v-html="item.description"></span>
                 </div>
                 <span v-if="item.video">
@@ -77,7 +75,7 @@
             <button
                 class="link_button topMy"
                 :disabled="disabledTop"
-                @click.prevent="top"
+                @click.prevent="top()"
             >
                 <img src="/img/top.png"/>
             </button>
@@ -91,8 +89,6 @@
     import Loading from "vue-loading-overlay";
     import "vue-loading-overlay/dist/vue-loading.css";
     import {eventBus} from "../app";
-
-
     export default {
         name: "Word",
         data() {
@@ -174,6 +170,7 @@
                 }
             },
             loadImg(src){
+
                 let url=process.env.MIX_API_URL+'/'+src;
                 const image = new Image();
                 image.onload = () => {

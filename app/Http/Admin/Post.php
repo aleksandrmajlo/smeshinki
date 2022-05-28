@@ -59,16 +59,19 @@ class Post extends Section implements Initializable
     {
         $columns = [
             AdminColumn::text('id', '#')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
-//            AdminColumn::link('title', 'Назва')->setSearchCallback(function ($column, $query, $search) {
-//                return $query ->orWhere('title', 'like', '%' . $search . '%');
-//            })->setOrderable(function ($query, $direction) {
-//                $query->orderBy('created_at', $direction);
-//            })->setHtmlAttribute('class', 'text-center'),
             AdminColumnEditable::text('title')->setLabel('Назва')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::text('calendar.date', 'Дата свята')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::text('calendar.title', 'Назва свята')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::custom("Тип календаря", function(\Illuminate\Database\Eloquent\Model $model) {
                 return $model->calendar->typecalendar->title;
+            })->setHtmlAttribute('class', 'text-center'),
+            AdminColumnEditable::checkbox('status')->setLabel('Опублікувати')->setHtmlAttribute('class', 'text-center'),
+            AdminColumn::custom("Стан", function(\Illuminate\Database\Eloquent\Model $model) {
+                if($model->status==1){
+                    return '<div class="text-info">Опубліковано</div>';
+                }else{
+                    return '<div class="text-danger">Не опубліковано</div>';
+                }
             })->setHtmlAttribute('class', 'text-center'),
         ];
 
@@ -101,6 +104,7 @@ class Post extends Section implements Initializable
 
                 AdminFormElement::select('calendar_id', 'Дата', \App\Models\Calendar::class)->setDisplay('title')->required(),
 
+                AdminFormElement::checkbox('status', 'Опублікувати'),
                 AdminFormElement::text('meta_title', 'meta_title(SEO)')->required(),
                 AdminFormElement::textarea('meta_description', 'meta_description(SEO)')->required(),
             ])
