@@ -23,6 +23,30 @@ use SleepingOwl\Admin\Navigation\Page;
 
 
 return [
+
+    [
+        'title' => "Календар",
+        'icon' => 'fa fa-calendar',
+        'priority' =>'300',
+        'pages' => [
+
+            (new Page(\App\Models\Calendar::class))
+                ->setIcon('fa fa-arrows-spin')
+                ->setPriority(0),
+            (new Page(\App\Models\Holiday::class))
+                ->setIcon('fa fa-fax11')
+                ->setPriority(5),
+            (new Page(\App\Models\Post::class))
+                ->setIcon('fa fa-sticky-note11111')
+                ->setPriority(10),
+            /*
+            (new Page(\App\Models\Typecalendar::class))
+                ->setIcon('fa fa-arrows-spin')
+                ->setPriority(20),
+            */
+        ]
+    ]
+
     /*
     [
         'title' => 'Dashboard',

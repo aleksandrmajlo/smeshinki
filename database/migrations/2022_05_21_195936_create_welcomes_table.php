@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('email')->nullable();
             $table->integer('user_id')->nullable();
+            $table->integer('holiday_id')->nullable();
             $table->integer('word_id')->nullable();
-            $table->date('date');
+            $table->date('date')->nullable();
             $table->text('welcome');
             $table->string('photo')->nullable();
             $table->boolean('status')->default(0);

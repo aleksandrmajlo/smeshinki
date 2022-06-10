@@ -27,7 +27,6 @@ Route::post(
         $request = file_get_contents("php://input");
         TelegramService::putLogIn($request);
         $response = Telegram::getWebhookUpdates();
-//        dd($response);
         // фото есть !!!!
         if($response->channel_post&&$response->channel_post->photo){
             TelegramService::createWordWithPhoto($response->channel_post);
@@ -50,8 +49,10 @@ Route::get('get', [\App\Http\Controllers\WordController::class, 'get']);
 Route::get('/getCalendar', [App\Http\Controllers\HomeController::class, 'getCalendar']);
 // получить записи календаря на сегодня
 Route::post('/getPostToday', [App\Http\Controllers\HomeController::class, 'getPostToday']);
+Route::get('/getPostToday', [App\Http\Controllers\HomeController::class, 'getPostToday']);
 // получить записи для даного праздника
 Route::post('/getPost', [App\Http\Controllers\HomeController::class, 'getPost']);
+Route::get('/getPost', [App\Http\Controllers\HomeController::class, 'getPost']);
 // получить записи на странице  календаря
 Route::get('/getPosts', [App\Http\Controllers\PostController::class, 'getPosts']);
 // получить пользователя на странице календаря
@@ -62,7 +63,7 @@ Route::get('/getUser', [App\Http\Controllers\PostController::class, 'getUser']);
 Route::post('/getAnecdote', [App\Http\Controllers\HomeController::class, 'getAnecdote']);
 
 // получаем картинки видео спарсенное
-Route::get('/getWord', [App\Http\Controllers\HomeController::class, 'getWord']);
+Route::get('/getWord', [App\Http\Controllers\WordController::class, 'index']);
 //даты календаря
 Route::get('/calendar/{calendar:slug}', [App\Http\Controllers\CalendarController::class,'show']);
 
@@ -75,6 +76,11 @@ Route::post('/addRating', [App\Http\Controllers\PostController::class, 'addRatin
 Route::post('/sort', [App\Http\Controllers\CalendarController::class, 'sort']);
 // отпавить сообщение
 Route::post('/addWelcome', [App\Http\Controllers\WelcomeController::class, 'addWelcome']);
+
+// парсер с телеги
+Route::post('/test', [App\Http\Controllers\WordController::class, 'test']);
+// парсер календаря
+Route::get('/calendar_parser', [App\Http\Controllers\CalendarController::class, 'calendar_parser']);
 
 Auth::routes();
 

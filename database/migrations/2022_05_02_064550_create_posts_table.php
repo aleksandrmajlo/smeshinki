@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->string('video')->nullable();
 
-            $table->integer('calendar_id')->unsigned()->nullable();
+            $table->integer('holiday_id')->unsigned()->nullable();
 
             $table->string('slug')->nullable();
             $table->text('meta_title')->nullable();

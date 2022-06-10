@@ -40,8 +40,10 @@
 
             @if(isset($linkCatalog))
                 <div class="mt-3 w-100">
-                    <a href="/calendar/{{$post->calendar->slug}}#{{$post->id}}"
-                       class="btn  btn-outline-primary w-100">Перейти до дати {{$post->calendar->date_write}}</a>
+                    <a href="/calendar/{{$post->holiday-> calendars->first()->slug}}#{{$post->id}}"
+                       class="btn  btn-outline-primary w-100">
+                        Перейти до дати {{$post->holiday-> calendars->first()->date_write}}
+                    </a>
                 </div>
             @endif
 

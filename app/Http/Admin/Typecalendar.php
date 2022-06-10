@@ -34,7 +34,7 @@ class Typecalendar extends Section implements Initializable
     /**
      * @var string
      */
-    protected $title="Типи календаря";
+    protected $title="Типи";
 
     /**
      * @var string
@@ -46,7 +46,7 @@ class Typecalendar extends Section implements Initializable
      */
     public function initialize()
     {
-        $this->addToNavigation()->setPriority(450)->setIcon('fa fa-angle-right');
+//        $this->addToNavigation()->setPriority(450)->setIcon('fa fa-angle-right');
     }
 
     /**

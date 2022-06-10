@@ -35,7 +35,7 @@ class Post extends Section implements Initializable
     /**
      * @var string
      */
-    protected $title="Записи для календаря";
+    protected $title="Поздоровлення";
 
     /**
      * @var string
@@ -47,7 +47,7 @@ class Post extends Section implements Initializable
      */
     public function initialize()
     {
-        $this->addToNavigation()->setPriority(500)->setIcon('fa fa-sticky-note');
+//        $this->addToNavigation()->setPriority(500)->setIcon('fa fa-sticky-note');
     }
 
     /**
@@ -60,11 +60,11 @@ class Post extends Section implements Initializable
         $columns = [
             AdminColumn::text('id', '#')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
             AdminColumnEditable::text('title')->setLabel('Назва')->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::text('calendar.date', 'Дата свята')->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::text('calendar.title', 'Назва свята')->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::custom("Тип календаря", function(\Illuminate\Database\Eloquent\Model $model) {
-                return $model->calendar->typecalendar->title;
-            })->setHtmlAttribute('class', 'text-center'),
+//            AdminColumn::text('calendar.date', 'Дата свята')->setHtmlAttribute('class', 'text-center'),
+            AdminColumn::text('holiday.title', 'Назва свята')->setHtmlAttribute('class', 'text-center'),
+//            AdminColumn::custom("Тип календаря", function(\Illuminate\Database\Eloquent\Model $model) {
+//                return $model->calendar->typecalendar->title;
+//            })->setHtmlAttribute('class', 'text-center'),
             AdminColumnEditable::checkbox('status')->setLabel('Опублікувати')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::custom("Стан", function(\Illuminate\Database\Eloquent\Model $model) {
                 if($model->status==1){
@@ -102,11 +102,11 @@ class Post extends Section implements Initializable
                 AdminFormElement::image('photo', 'Фото'),
                 AdminFormElement::file('video', 'Video'),
 
-                AdminFormElement::select('calendar_id', 'Дата', \App\Models\Calendar::class)->setDisplay('title')->required(),
+                AdminFormElement::select('holiday_id', 'Cвято', \App\Models\Holiday::class)->setDisplay('title')->required(),
 
                 AdminFormElement::checkbox('status', 'Опублікувати'),
-                AdminFormElement::text('meta_title', 'meta_title(SEO)')->required(),
-                AdminFormElement::textarea('meta_description', 'meta_description(SEO)')->required(),
+                AdminFormElement::text('meta_title', 'meta_title(SEO)'),
+                AdminFormElement::textarea('meta_description', 'meta_description(SEO)'),
             ])
         ]);
         $form->getButtons()->setButtons([

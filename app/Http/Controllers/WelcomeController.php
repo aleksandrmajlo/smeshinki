@@ -21,7 +21,7 @@ class WelcomeController extends Controller
             $welcome->name=$request->name;
             $welcome->email=$request->email;
         }
-        $welcome->calendar_id=$request->calendar_id;
+        $welcome->holiday_id=$request->holiday_id;
         $welcome->title=$title;
         $welcome->welcome=$welcome_text;
         if ($request->photo) {

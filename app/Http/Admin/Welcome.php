@@ -60,7 +60,7 @@ class Welcome extends Section implements Initializable
         $columns = [
             AdminColumn::text('id', '#')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
             AdminColumnEditable::text('title')->setLabel('Назва')->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::datetime('calendar.date', 'Дата')->setFormat('d.m.Y')->setHtmlAttribute('class', 'text-center'),
+            AdminColumn::text('holiday.title', 'Свято')->setHtmlAttribute('class', 'text-center'),
             AdminColumn::custom("Користувач", function(\Illuminate\Database\Eloquent\Model $model) {
                 if($model->user){
                     return $model->user->name.' '.$model->user->email;
@@ -112,7 +112,7 @@ class Welcome extends Section implements Initializable
                 AdminFormElement::text('title', 'Заголовок')->required(),
                 AdminFormElement::textarea('welcome', 'Вітання')->required(),
 //                AdminFormElement::date('date', 'Дата')->required(),
-                AdminFormElement::select('calendar_id', 'Дата', \App\Models\Calendar::class)->setDisplay('title')->required(),
+                AdminFormElement::select('holiday_id', 'Свято', \App\Models\Holiday::class)->setDisplay('title')->required(),
 
                 AdminFormElement::image('photo', 'Фото'),
                 AdminFormElement::checkbox('status', 'Опублікувати в записах для календаря'),

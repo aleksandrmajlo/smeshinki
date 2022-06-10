@@ -70,9 +70,9 @@
                 <span v-else>
                      <share :url="loadImg(item.photo)" :title="item.show_title?item.title:''" :description="item.show_title?item.description:''"/>
                 </span>
-                <div class="mt-3 w-100" v-if="calendars.length>0">
-                    <a :href="calendar_url(item.calendar_id)" class="btn  btn-outline-primary w-100">Перейти до дати {{calendar_date(item.calendar_id)}}</a>
-                </div>
+<!--                <div class="mt-3 w-100" v-if="calendars.length>0">-->
+<!--                    <a :href="calendar_url(item.calendar_id)" class="btn  btn-outline-primary w-100">Перейти до дати {{calendar_date(item.calendar_id)}}</a>-->
+<!--                </div>-->
                 <hr class="myHr" />
             </div>
             <!-- left right -->

@@ -17,6 +17,7 @@ class AdminSectionsServiceProvider extends ServiceProvider
         \App\Models\Calendar::class => 'App\Http\Admin\Calendar',
         \App\Models\Typecalendar::class => 'App\Http\Admin\Typecalendar',
         \App\Models\Welcome::class => 'App\Http\Admin\Welcome',
+        \App\Models\Holiday::class => 'App\Http\Admin\Holiday',
     ];
 
     /**

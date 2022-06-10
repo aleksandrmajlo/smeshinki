@@ -14,6 +14,8 @@ class PostController extends Controller
     {
         $limit = config('app.limit');
         $sort=  session('sort','rating');
+
+
         if($sort=='new_end'){
             return Post::orderBy('created_at','desc')->active()->paginate($limit);
         }elseif($sort=='end_new'){
@@ -22,6 +24,7 @@ class PostController extends Controller
         else{
             return Post::orderBy('rating_avg','desc')->active()->paginate($limit);
         }
+
     }
     // получить пользователя на странице календаря
     // и фаворитлв

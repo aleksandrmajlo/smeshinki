@@ -2,29 +2,23 @@
     <div class="WrapContent">
         <loading :active.sync="isLoading" :is-full-page="fullPage"/>
         <div class="card" v-cloak>
-            <button
-                class="link_button  downMy"
-                :disabled="disabledDown"
-                @click.prevent="down()">
-                <img src="/img/down.png"/>
-            </button>
-            <div class="PaginationMy text-center mb-3">Сторінка {{page}} з {{total}} (показано {{items.length}} публікацій)</div>
             <div  class="WrapLeftRight d-flex justify-content-between mb-3 ">
                 <button
                     class="link_button_lr leftMy"
                     :disabled="disabledTop"
-                    @click.prevent="top(1)"
+                    @click.prevent="top()"
                 >
                     <img src="/img/left-arrow.png"/>
                 </button>
                 <button
                     class="link_button_lr rightMy"
                     :disabled="disabledDown"
-                    @click.prevent="down(1)"
+                    @click.prevent="down()"
                 >
                     <img src="/img/right-arrow.png"/>
                 </button>
             </div>
+            <div class="PaginationMy text-center mb-3">Показано {{items.length}} публікацій з {{total}}</div>
             <div class="WrapItems mb-5" v-for="item in items" :key="item.id">
                 <div
                     v-show="item.photo"
@@ -56,33 +50,38 @@
                 </span>
             </div>
             <!-- left right -->
-            <div id="WrapLeftRight" class="WrapLeftRight d-flex justify-content-between mb-3 ">
+            <div class="PaginationMy text-center mb-3">Показано {{items.length}} публікацій з {{total}}</div>
+            <div id="WrapLeftRight" class="WrapLeftRight d-flex justify-content-center mb-3 ">
+                <button :disabled="disabledTen" class="btn btn-primary"
+                   @click.prevent="showTen"
+                   href="#">Показати ще 10</button>
+                <!--
                 <button
                     class="link_button_lr leftMy"
                     :disabled="disabledTop"
-                    @click.prevent="top(1)"
+                    @click.prevent="top()"
                 >
                     <img src="/img/left-arrow.png"/>
                 </button>
                 <button
                     class="link_button_lr rightMy"
                     :disabled="disabledDown"
-                    @click.prevent="down(1)"
+                    @click.prevent="down()"
                 >
                     <img src="/img/right-arrow.png"/>
                 </button>
+                -->
             </div>
-            <button
-                class="link_button topMy"
-                :disabled="disabledTop"
-                @click.prevent="top()"
-            >
-                <img src="/img/top.png"/>
-            </button>
+<!--            <button-->
+<!--                class="link_button topMy"-->
+<!--                :disabled="disabledTop"-->
+<!--                @click.prevent="top()"-->
+<!--            >-->
+<!--                <img src="/img/top.png"/>-->
+<!--            </button>-->
         </div>
     </div>
 </template>
-
 <script>
     import axios from "axios";
     import Share from "./Share.vue";
@@ -94,10 +93,15 @@
         data() {
             return {
                 disabledTop: true,
-                disabledDown: false,
+                disabledDown: true,
+                disabledTen: true,// показать еще 10
 
-                page:1,// страница
-                total:'',// кол-во страниц
+                firstId:null,
+                lastId:null,
+                firstIdCol:null,// первое ид в кол все
+                lastIdCol:null,// первое ид в кол все
+                // page:1,// страница
+                total:0,// кол-во страниц
                 to:'',   // сколько показум
                 show_title: false,
                 items: {},
@@ -124,11 +128,23 @@
                 axios
                     .get("/getWord", {
                         params:{
-                            page: this.page,
+                            firstId: this.firstId,
+                            lastId: this.lastId,
+                            type:type,
                         }
                         // type: type,
                     })
                     .then((res) => {
+                        //  if(res.data.words){
+                             this.items=res.data.words;
+                             this.firstId=res.data.firstId;
+                             this.lastId=res.data.lastId;
+                             this.firstIdCol=res.data.firstIdCol;
+                             this.lastIdCol=res.data.lastIdCol;
+                        this.total=res.data.count
+
+                         this.setDisabled();
+                        /*
                         const data=res.data;
                         this.total=data.last_page;
                         this.items=data.data;
@@ -144,6 +160,7 @@
                         }else{
                             this.disabledDown = false;
                         }
+                        */
                     })
                     .catch((err) => {
                         console.error(err);
@@ -154,8 +171,7 @@
             },
             // вверх
             top(anecdot = false) {
-                this.page=this.page-1;
-                this.getWord();
+                this.getWord('top');
                 if (!anecdot) {
                     eventBus.$emit("anecdoteChange");
                 }
@@ -163,14 +179,34 @@
             },
             // вниз
             down(anecdot = false) {
-                this.page=this.page+1;
-                this.getWord();
+                this.getWord('down');
                 if (!anecdot) {
                     eventBus.$emit("anecdoteChange");
                 }
             },
-            loadImg(src){
+            // установить кнопки
+            setDisabled(){
 
+                if(this.firstId==this.firstIdCol){
+                    this.disabledTop=true;
+                }else{
+                    this.disabledTop=false;
+                }
+
+                if(this.lastId==this.lastIdCol){
+                    this.disabledDown=true;
+                    this.disabledTen=true;
+                }else{
+                    this.disabledDown=false;
+                    this.disabledTen=false;
+                }
+
+            },
+            // показать еще 10
+            showTen(){
+                this.getWord('ten');
+            },
+            loadImg(src){
                 let url=process.env.MIX_API_URL+'/'+src;
                 const image = new Image();
                 image.onload = () => {

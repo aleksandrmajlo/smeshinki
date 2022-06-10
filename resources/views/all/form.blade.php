@@ -18,16 +18,18 @@
                 </div>
             @else
             @endguest
+
             <div class="row mb-3">
-                <label for="date" class="col-md-2 col-form-label text-md-end">Дата</label>
+                <label for="date" class="col-md-2 col-form-label text-md-end">Свято</label>
                 <div class="col-md-10">
-                    <select class="form-control" name="calendar_id" required>
-                        @foreach($calendarForm  as $item)
-                            <option value="{{$item->id}}">{{$item->date}} - {{$item->title}}</option>
+                    <select class="form-control" name="holiday_id" required>
+                        @foreach($holidaysForm  as $item)
+                            <option value="{{$item->id}}">{{$item->title}}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
+
             <div class="row mb-3">
                 <label for="welcome" class="col-md-2 col-form-label text-md-end">Привітання</label>
                 <div class="col-md-10">

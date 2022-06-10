@@ -16,9 +16,9 @@ class Welcome extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function calendar()
+    public function holiday()
     {
-        return $this->belongsTo(Calendar::class);
+        return $this->belongsTo(Holiday::class);
     }
 
     public static function boot()
@@ -26,53 +26,37 @@ class Welcome extends Model
 
         parent::boot();
 
-        static::updated(function($item) {
+        static::updated(function ($item) {
             // если не привязан пост значит публикация
             // и статус опубликовать
-            if(is_null($item->post_id)&&$item->status){
-//                $calendar=Calendar::whereDate('date', '=', $item->date)->first();
-//                if($calendar){}
-//                else{
-//                     создать дату в календаре
-//                    $typecalendar=\App\Models\Typecalendar::first();
-//                    $calendar=new Calendar;
-//                    $calendar->date=$item->date;
-//                    $calendar->title=$item->title;
-//                    $calendar->meta_title=$item->date;
-//                    $calendar->meta_description=$item->date;
-//                    $calendar->typecalendar_id=$typecalendar->id;
-//                    $calendar->save();
-//                }
-                $post=new Post;
-                $post->title=$item->title;
-                $post->meta_title=$item->title;
-                $post->meta_description=$item->title;
-                $post->text=$item->welcome;
-                $post->photo=$item->photo;
-                $post->calendar_id=$item->calendar_id;
+            if (is_null($item->post_id) && $item->status) {
+
+                $post = new Post;
+                $post->title = $item->title;
+                $post->meta_title = $item->title;
+                $post->meta_description = $item->title;
+                $post->text = $item->welcome;
+                $post->photo = $item->photo;
+                $post->holiday_id = $item->holiday_id;
                 $post->save();
 
                 \DB::table('welcomes')
-                    ->where('id',$item->id)
+                    ->where('id', $item->id)
                     ->update(['post_id' => $post->id]);
-            }
-            else{
+            } else {
                 // тут тупо обновить !!!!!
-                if($item->status){
+                if ($item->status) {
                     // обновить опубликовать
-                    $post=Post::find($item->post_id);
-                    $post->status=1;
+                    $post = Post::find($item->post_id);
+                    $post->status = 1;
                     $post->save();
-                }
-                elseif($item->post_id&&!$item->status){
+                } elseif ($item->post_id && !$item->status) {
                     // обновить не публиковать
-                    $post=Post::find($item->post_id);
-                    $post->status=0;
+                    $post = Post::find($item->post_id);
+                    $post->status = 0;
                     $post->save();
                 }
             }
-
         });
-
     }
 }

@@ -16,21 +16,26 @@ class Calendar extends Model
     {
         return [
             'slug' => [
-                'source' => 'title'
+                'source' => 'date'
             ]
         ];
     }
 
-    public function limitposts()
-    {
-        return $this->hasMany(Post::class)
-            ->active()
-            ->orderBy('id', 'desc')->limit(3);
-    }
+    // public function limitposts()
+    // {
+    // return $this->hasMany(Post::class)
+    // ->active()
+    // ->orderBy('id', 'desc')->limit(3);
+    // }
 
-    public function posts()
+    // public function posts()
+    // {
+    // return $this->hasMany(Post::class)->orderBy('id', 'desc');
+    // }
+    // праздники
+    public function holidays()
     {
-        return $this->hasMany(Post::class)->orderBy('id', 'desc');
+        return $this->belongsToMany(Holiday::class);
     }
 
     public function typecalendar()
@@ -75,4 +80,26 @@ class Calendar extends Model
     }
 
 
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $this->date;
+    }
+
+    public function setMetaTitleAttribute($value)
+    {
+        $meta_title = $value;
+        if (empty($meta_title)) {
+            $meta_title = $this->date;
+        }
+        $this->attributes['meta_title'] = $meta_title;
+    }
+
+    public function setMetaDescriptionAttribute($value)
+    {
+        $meta_description = $value;
+        if (empty($meta_description)) {
+            $meta_description = $this->date;
+        }
+        $this->attributes['meta_description'] = $meta_description;
+    }
 }

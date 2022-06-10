@@ -34,7 +34,7 @@ class Calendar extends Section implements Initializable
     /**
      * @var string
      */
-    protected $title='Календар';
+    protected $title='Дати';
 
     /**
      * @var string
@@ -46,7 +46,7 @@ class Calendar extends Section implements Initializable
      */
     public function initialize()
     {
-        $this->addToNavigation()->setPriority(300)->setIcon('fa fa-calendar');
+//        $this->addToNavigation()->setPriority(300)->setIcon('fa fa-calendar');
     }
 
     /**
@@ -58,21 +58,21 @@ class Calendar extends Section implements Initializable
     {
         $columns = [
             AdminColumn::text('id', '#')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::link('title', 'Назва')->setSearchCallback(function ($column, $query, $search) {
-                return $query ->orWhere('title', 'like', '%' . $search . '%');
-            })->setOrderable(function ($query, $direction) {
-                $query->orderBy('created_at', $direction);
-            })->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::datetime('date', 'Дата')->setFormat('d.m.Y')->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::text('typecalendar.title', 'Тип')->setHtmlAttribute('class', 'text-center'),
 
-
+//            AdminColumn::link('title', 'Назва')->setSearchCallback(function ($column, $query, $search) {
+//                return $query ->orWhere('title', 'like', '%' . $search . '%');
+//            })->setOrderable(function ($query, $direction) {
+//                $query->orderBy('created_at', $direction);
+//            })->setHtmlAttribute('class', 'text-center'),
+            AdminColumn::datetime('date', 'Дата')->setFormat('d.m.Y')->setHtmlAttribute('class', 'text-center text-nowrap'),
+            AdminColumn::lists('holidays.title', 'Cвята')->setHtmlAttribute('class', 'text-center'),
+            AdminColumn::text('typecalendar.title', 'Тип')->setHtmlAttribute('class', 'text-center text-nowrap'),
         ];
         $display = AdminDisplay::datatables()
             ->setName('firstdatatables')
-            ->setOrder([[0, 'desc']])
+            ->setOrder([[1, 'asc']])
             ->setDisplaySearch(true)
-            ->paginate(25)
+            ->paginate(250)
             ->setColumns($columns)
             ->setHtmlAttribute('class', 'table-primary table-hover th-center');
         return $display;
@@ -88,12 +88,15 @@ class Calendar extends Section implements Initializable
     {
         $form = AdminForm::card()->addBody([
             AdminFormElement::columns()->addColumn([
-                AdminFormElement::text('title', 'Заголовок')->required(),
+
                 AdminFormElement::date('date', 'Дата')->required(),
                 AdminFormElement::select('typecalendar_id', 'Тип', \App\Models\Typecalendar::class)->setDisplay('title')->required(),
 
-                AdminFormElement::text('meta_title', 'meta_title(SEO)')->required(),
-                AdminFormElement::textarea('meta_description', 'meta_description(SEO)')->required(),
+                AdminFormElement::multiselect('holidays', 'Свята для цього дня', \App\Models\Holiday::class)->setDisplay('title'),
+                AdminFormElement::checkbox('repeat','повторювати щороку'),
+                AdminFormElement::text('title', 'Заголовок (SEO)'),
+                AdminFormElement::text('meta_title', 'meta_title(SEO)'),
+                AdminFormElement::textarea('meta_description', 'meta_description(SEO)'),
             ])
         ]);
         $form->getButtons()->setButtons([

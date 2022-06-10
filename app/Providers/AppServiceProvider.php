@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Carbon\Carbon;
-use  App\Models\Calendar;
+use  App\Models\Holiday;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 
@@ -30,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale(config('app.locale'));
         Paginator::defaultView('vendor.pagination.bootstrap-5');
         // для формы  своя  заявка
-        $calendarForm=Calendar::orderBy('date')->get();
-        \View::share('calendarForm', $calendarForm);
+        $holidaysForm=Holiday::orderBy('id','desc')->get();
+        \View::share('holidaysForm', $holidaysForm);
     }
 }

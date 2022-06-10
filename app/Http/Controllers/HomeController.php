@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Anecdote;
 use App\Models\Post;
+use App\Models\Holiday;
 use App\Models\Calendar;
 use App\Models\Typecalendar;
 use App\Models\Word;
@@ -88,8 +89,15 @@ class HomeController extends Controller
     {
         $calendar_id = $request->calendar_id;
         $calendar=Calendar::find($calendar_id);
-        $posts = $calendar->limitposts;
+        $holidays = $calendar->holidays;
+        $posts=collect();
+        foreach ($holidays as $holiday){
+            foreach ($holiday->posts as $item){
+                $posts->push($item);
+            }
+        }
         return response()->json([
+            'holidays'=>$holidays,
            'posts'=> $posts,
            'url'=> $calendar->url
         ]);
@@ -98,13 +106,26 @@ class HomeController extends Controller
     // получить записи для данного дня
     public function getPostToday(Request $request){
        $typecalendar=$request->typecalendar;
+       $holidays=collect();
+       $posts=collect();
+       $url='';
        $calendar=Calendar::where('typecalendar_id',$typecalendar)
                            ->whereDate('date', Carbon::today())
                            ->first();
-        $posts = $calendar->limitposts;
+       if($calendar){
+           $holidays = $calendar->holidays;
+           $url=$calendar->url();
+           foreach ($holidays as $holiday){
+               foreach ($holiday->posts as $item){
+                   $posts->push($item);
+               }
+           }
+       }
+
         return response()->json([
+            'holidays'=>$holidays,
             'posts'=> $posts,
-            'url'=> $calendar->url
+            'url'=> $url
         ]);
     }
 
@@ -128,11 +149,5 @@ class HomeController extends Controller
         ]);
     }
 
-    // получаем картинки
-    public function getWord(Request $request)
-    {
-        $limit = config('app.limit');
-        return Word::orderBy('id', 'desc')->active()->paginate($limit);
 
-    }
 }

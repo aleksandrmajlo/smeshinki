@@ -17,6 +17,14 @@
                 is-expanded
             />
             <p  v-show="date_read!=''" class="h5 text-center mt-3">{{date_read}}</p>
+
+            <template v-if="holidays.length>0">
+                <div class="text-info text-center">Свята в цей день:</div>
+                <ul class="mb-3 list-group list-group-flush">
+                    <li v-for="holiday in holidays" class="list-group-item">{{holiday.title}}</li>
+                </ul>
+            </template>
+
             <post :items="items" :url="url"></post>
         </div>
     </div>
@@ -39,6 +47,7 @@
                     input: "YYYY-MM-DD",
                 },
                 date_read:'',// дата которую пишем
+                holidays:[],// праздники
                 items: [],// записи
                 url:'',// урл страницы даты
                 isLoading: true,
@@ -65,6 +74,7 @@
             typecalendar(){
                 this.setDate();
                 this.items=[];
+                this.holidays=[];
             },
         },
         methods: {
@@ -77,6 +87,7 @@
                             calendar_id: day.attributes[0].customData,
                         })
                         .then((res) => {
+                            this.holidays = res.data.holidays;
                             this.items = res.data.posts;
                             this.url = res.data.url;
                         })
@@ -98,6 +109,7 @@
                         typecalendar:this.typecalendar
                     })
                     .then((res) => {
+                        this.holidays = res.data.holidays;
                         this.items = res.data.posts;
                         this.url = res.data.url;
                     })

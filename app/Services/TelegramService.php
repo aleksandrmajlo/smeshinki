@@ -72,10 +72,7 @@ class TelegramService
             $video_link = 'https://api.telegram.org/file/bot' . $TELEGRAM_BOT_TOKEN . '/' . $answer->result->file_path;
             $ext = pathinfo($video_link, PATHINFO_EXTENSION);
             if (file_put_contents(public_path() . '/files/uploads/'.$file_name, file_get_contents($video_link))) {
-//                $desc='';
-//                if($datas->caption){
-//                    $desc=$datas->caption;
-//                }
+
                 $word = new Word;
                 $word->video='files/uploads/'.$file_name;
                 $word->title='Telegram '.$datas->message_id;
