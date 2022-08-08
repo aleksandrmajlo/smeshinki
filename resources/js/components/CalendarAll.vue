@@ -2,12 +2,19 @@
     <div class="WrapCalendar">
         <div class="card" v-cloak>
             <loading :active.sync="isLoading" :is-full-page="fullPage"/>
-            <div class="typeCalendar mb-2">
-                <label>Тип:</label>
-                <select class="form-control" v-model="typecalendar">
-                    <option v-for="(item,index) in datatypes" :key="item.id" :value="item.id">{{item.title}}</option>
-                </select>
-            </div>
+
+            <p  v-show="date_read!=''" class="h5 text-center mt-3">{{date_read}}</p>
+            <template v-if="holidays.length>0">
+                <div class="text-info text-center">Свята в цей день:</div>
+                <ul class="mb-3 list-group list-group-flush">
+                    <li v-for="holiday in holidays" class="list-group-item">
+                        <a class="btn btn btn-outline-primary" :href="'/holiday/'+holiday.slug">{{holiday.title}}</a>
+                    </li>
+                </ul>
+            </template>
+
+            <post :items="items" :url="url"></post>
+
             <date-picker
                 locale="uk"
                 v-model="date"
@@ -16,16 +23,13 @@
                 :attributes="attrs"
                 is-expanded
             />
-            <p  v-show="date_read!=''" class="h5 text-center mt-3">{{date_read}}</p>
+            <div class="typeCalendar mb-2">
+                <label>Тип:</label>
+                <select class="form-control" v-model="typecalendar">
+                    <option v-for="(item,index) in datatypes" :key="item.id" :value="item.id">{{item.title}}</option>
+                </select>
+            </div>
 
-            <template v-if="holidays.length>0">
-                <div class="text-info text-center">Свята в цей день:</div>
-                <ul class="mb-3 list-group list-group-flush">
-                    <li v-for="holiday in holidays" class="list-group-item">{{holiday.title}}</li>
-                </ul>
-            </template>
-
-            <post :items="items" :url="url"></post>
         </div>
     </div>
 </template>
@@ -65,16 +69,16 @@
         created() {
             this.datatypes=JSON.parse(this.datatype);
             this.typecalendar=this.datatypes[0].id;
+            this.setDate();
         },
         mounted(){
             this.date=new Date();
-            this.loadSetDate();
         },
         watch: {
             typecalendar(){
-                this.setDate();
                 this.items=[];
                 this.holidays=[];
+                this.loadSetDate();
             },
         },
         methods: {
@@ -85,6 +89,7 @@
                     axios
                         .post("/getPost", {
                             calendar_id: day.attributes[0].customData,
+                            typecalendar:this.typecalendar
                         })
                         .then((res) => {
                             this.holidays = res.data.holidays;
@@ -104,9 +109,11 @@
             loadSetDate(){
                 this.isLoading=true;
                 this.date_read=this.dateLoc(this.date);
+                let date=this.date.toISOString().slice(0, 10).replace('T', ' ');
                 axios
                     .post("/getPostToday", {
-                        typecalendar:this.typecalendar
+                        typecalendar:this.typecalendar,
+                        date:date
                     })
                     .then((res) => {
                         this.holidays = res.data.holidays;

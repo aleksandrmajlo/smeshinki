@@ -1,6 +1,6 @@
 <template>
     <div class="mb-3 position-relative">
-          <loading :active.sync="isLoading" :is-full-page="fullPage"  loader="dots" />
+        <loading :active.sync="isLoading" :is-full-page="fullPage"  loader="dots" />
         <h5>Рейтинг:</h5>
         <div class="wrapRating" v-if="isShow">
             <star-rating
@@ -31,7 +31,11 @@
                 fullPage: false,
             }
         },
-        props: ['rating_avg', 'total_votes','post_id'],
+        props: [
+            'rating_avg',
+            'total_votes',
+            'post_id'
+            ],
         components: {
             Loading,
             StarRating

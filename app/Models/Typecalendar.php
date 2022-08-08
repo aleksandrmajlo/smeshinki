@@ -18,7 +18,7 @@ class Typecalendar extends Model
         ];
     }
 
-    public function calendars(){
-        return $this->hasMany(Calendar::class);
+    public function holidays(){
+        return $this->hasMany(Holiday::class);
     }
 }

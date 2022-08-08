@@ -16,9 +16,10 @@ return new class extends Migration
         Schema::create('calendars', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
+            $table->string('repetition')->nullable();
             $table->date('date');
 
-            $table->integer('typecalendar_id')->unsigned()->nullable();
+
             $table->bigInteger('repeat')->default(0)->comment('Повторять');
 
             $table->string('slug')->nullable();

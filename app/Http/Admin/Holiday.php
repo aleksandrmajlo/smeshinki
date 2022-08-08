@@ -35,7 +35,7 @@ class Holiday extends Section implements Initializable
     /**
      * @var string
      */
-    protected $title='Свята';
+    protected $title = 'Свята';
 
     /**
      * @var string
@@ -59,13 +59,26 @@ class Holiday extends Section implements Initializable
     {
         $columns = [
             AdminColumn::text('id', '#')->setWidth('50px')->setHtmlAttribute('class', 'text-center'),
+
 //            AdminColumn::link('title', 'Назва')->setSearchCallback(function ($column, $query, $search) {
 //                return $query ->orWhere('title', 'like', '%' . $search . '%');
 //            })->setOrderable(function ($query, $direction) {
 //                $query->orderBy('created_at', $direction);
 //            })->setHtmlAttribute('class', 'text-center'),
-            AdminColumnEditable::textarea('title')->setLabel('Назва'),
+//
+            AdminColumnEditable::textarea('title')
+                ->setSearchCallback(function ($column, $query, $search) {
+                    return $query->orWhere('title', 'like', '%' . $search . '%');
+                })
+                ->setLabel('Назва'),
             AdminColumn::lists('calendars.date-write', 'День')->setHtmlAttribute('class', 'text-center'),
+//            AdminColumn::text('typecalendar.title', 'Тип')->setHtmlAttribute('class', 'text-center text-nowrap'),
+            AdminColumn::custom('Тип', function(\Illuminate\Database\Eloquent\Model $model) {
+                if($model->typecalendar){
+                    return $model->typecalendar->title;
+                }
+            })->setHtmlAttribute('class', 'text-center text-nowrap'),
+
         ];
         $display = AdminDisplay::datatables()
             ->setName('firstdatatables')
@@ -92,6 +105,7 @@ class Holiday extends Section implements Initializable
 
 
                 AdminFormElement::multiselect('calendars', 'День', \App\Models\Calendar::class)->setDisplay('date-write'),
+                AdminFormElement::select('typecalendar_id', 'Тип', \App\Models\Typecalendar::class)->setDisplay('title')->required(),
 
                 AdminFormElement::text('meta_title', 'meta_title(SEO)'),
                 AdminFormElement::textarea('meta_description', 'meta_description(SEO)'),

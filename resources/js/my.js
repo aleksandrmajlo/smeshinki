@@ -1,9 +1,4 @@
 jQuery(document).ready(function () {
-    $('#myList a').on('click', function (e) {
-        e.preventDefault();
-        console.log(2222)
-        $(this).tab('show')
-    })
     // форма добавить
     $('#addWelcome').submit(function (e) {
         e.preventDefault();

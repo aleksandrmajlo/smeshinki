@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Calendar;
 use App\Models\Holiday;
 use Illuminate\Support\Facades\Auth;
-
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class CalendarController extends Controller
 {
@@ -36,7 +36,7 @@ class CalendarController extends Controller
             ->set('description', $calendar->meta_description);
 
         $sort = session('sort', 'rating');
-        $holiday_ids=$calendar->holidays->pluck('id')->toArray();
+        $holiday_ids = $calendar->holidays->pluck('id')->toArray();
         if ($sort == 'new_end') {
             $posts = Post::orderBy('created_at', 'desc')->active()->whereIn('holiday_id', $holiday_ids)->paginate($limit);
         } elseif ($sort == 'end_new') {
@@ -76,45 +76,43 @@ class CalendarController extends Controller
     public function calendar_parser()
     {
         try {
-//            $path = public_path() . '/calendar/UkraineHolidays.ics';
             $path = public_path() . '/calendar/ical-ukraine.ics';
-            $ical = new \ICal\ICal($path, array(
-            ));
-            $events=$ical->events();
-            foreach ($events as $event){
-                if(!is_null($event->dtstamp)){
+            $ical = new \ICal\ICal($path, array());
+            $events = $ical->events();
+            foreach ($events as $event) {
+                if (!is_null($event->dtstamp)) {
 
-                    $title=$event->summary;
-                    $description=$event->description;
-                    $time=(int) $event->dtstart_array[2];
-                    $date=Carbon::createFromTimestamp($time)->format('Y-m-d');
+                    $title = $event->summary;
+                    $description = $event->description;
+                    $time = (int)$event->dtstart_array[2];
+                    $date = Carbon::createFromTimestamp($time)->format('Y-m-d');
 
-                    $count_holiday=Holiday::where('title_orig',$title)->count();
-                    if($count_holiday===0){
+                    $count_holiday = Holiday::where('title_orig', $title)->count();
+                    if ($count_holiday === 0) {
                         // если нету праздника с таким названием
-                        $holiday=new Holiday;
-                        $holiday->title=$title;
-                        $holiday->title_orig=$title;
-                        $holiday->description=$description;
-                        $holiday->meta_title=$title;
-                        $holiday->meta_description=$title;
+                        $holiday = new Holiday;
+                        $holiday->title = $title;
+                        $holiday->title_orig = $title;
+                        $holiday->description = $description;
+                        $holiday->meta_title = $title;
+                        $holiday->meta_description = $title;
                         $holiday->save();
                         //проверим  дату на календаре
-                        $calendar=Calendar::where('date',$date)->first();
-                        if($calendar){
-                          $calendar_id=$calendar->id;
-                        }else{
+                        $calendar = Calendar::where('date', $date)->first();
+                        if ($calendar) {
+                            $calendar_id = $calendar->id;
+                        } else {
                             // тут еще добавить проверку на повторитель!!!!!!!!1
 
                             // создадим новую дату
-                            $calendar=new Calendar;
-                            $calendar->date=$date;
-                            $calendar->repeat=1;
-                            $calendar->typecalendar_id=3;
-                            $calendar->meta_description=$date;
-                            $calendar->meta_title=$date;
+                            $calendar = new Calendar;
+                            $calendar->date = $date;
+                            $calendar->repeat = 1;
+                            $calendar->typecalendar_id = 3;
+                            $calendar->meta_description = $date;
+                            $calendar->meta_title = $date;
                             $calendar->save();
-                            $calendar_id=$calendar->id;
+                            $calendar_id = $calendar->id;
                         }
                         $holiday->calendars()->attach($calendar_id);
                     }
@@ -126,4 +124,72 @@ class CalendarController extends Controller
             die($e);
         }
     }
+
+    public function calendar_parser_excel()
+    {
+        $path = public_path() . '/excel/1.xlsx';
+        $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+
+        $spreadsheet = $reader->load($path);
+        $items = $spreadsheet->getSheet(0)->toArray();
+        foreach ($items as $k => $item) {
+            if ($k > 0) {
+                if ($item[0]) {
+                    $title = $item[1];
+                    $count_holiday = Holiday::where('title_orig', $title)->count();
+
+                    if ($count_holiday === 0) {
+                        // если нету праздника с таким названием
+                        // тип typecalendar_id
+
+                        $type = $item[3];
+                        $typecalendar_id = 3;
+                        $typecalendar = Typecalendar::where('title', $type)
+                            ->first();
+                        if ($typecalendar) {
+                            $typecalendar_id = $typecalendar->id;
+                        }
+
+                        $description = $item[2];
+                        $holiday = new Holiday;
+                        $holiday->title = $title;
+                        $holiday->title_orig = $title;
+                        $holiday->typecalendar_id = $typecalendar_id;
+                        $holiday->description = $description;
+                        $holiday->meta_title = $title;
+                        $holiday->meta_description = $title;
+                        if($item[6]){
+                            $holiday->repetition=$item[6];
+                        }
+                         $holiday->save();
+
+                        $date_ar = $item[0];
+                        $date_ar = explode(".", $date_ar);
+                        $date = $date_ar[2] . '-' . $date_ar[1] . '-' . $date_ar[0];
+                        $calendar = Calendar::where('date', $date)->first();
+                        if ($calendar) {
+                            $calendar_id = $calendar->id;
+                        } else {
+                            // тут еще добавить проверку на повторитель!!!!!!!!1
+
+                            // создадим новую дату
+                            $calendar = new Calendar;
+                            $calendar->date = $date;
+                            $calendar->repeat = 1;
+                            $calendar->meta_description = $date;
+                            $calendar->meta_title = $date;
+                            $calendar->save();
+                            $calendar_id = $calendar->id;
+                        }
+                        $holiday->calendars()->attach($calendar_id);
+                    }
+
+                }
+
+            }
+        }
+
+
+    }
+
 }

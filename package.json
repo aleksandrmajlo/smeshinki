@@ -24,11 +24,13 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "floating-vue": "^1.0.0-beta.18",
         "v-calendar": "^2.4.1",
         "vue-core-video-player": "^0.2.0",
         "vue-image-preloader": "^0.2.8",
         "vue-loading-overlay": "^3.4.2",
         "vue-social-sharing": "^3.0.9",
-        "vue-star-rating": "^1.7.0"
+        "vue-star-rating": "^1.7.0",
+        "vue-sweetalert2": "^5.0.5"
     }
 }

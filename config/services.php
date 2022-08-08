@@ -31,4 +31,30 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'facebook' => [
+        'client_id' => '579483333633999', //USE FROM FACEBOOK DEVELOPER ACCOUNT
+        'client_secret' => 'e0f93b2bb7c9a5799ae827131ccda886', //USE FROM FACEBOOK DEVELOPER ACCOUNT
+        'redirect' => 'https://smeshinki.net/facebook/callback/'
+    ],
+
+    'instagram' => [
+        'client_id' => env('INSTAGRAM_CLIENT_ID'),
+        'client_secret' => env('INSTAGRAM_CLIENT_SECRET'),
+        'redirect' => env('INSTAGRAM_REDIRECT_URI')
+    ],
+
+    'telegram' => [
+        'bot' => 'smeshinki_login_bot',  // The bot's username
+        'client_id' => null,
+        'client_secret' => '5434944143:AAF5WtGl4LmrBXhWi1vKj4UfC2Kt5__xS2E',
+        'redirect' => 'https://smeshinki.net/telegram/callback',
+    ],
+
+    'google' => [
+        'client_id' => '536694418508-lboi6usjrcg61dr8p9gt5jusp2hiqqva.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => 'https://smeshinki.net/google/callback',
+    ],
+
+
 ];

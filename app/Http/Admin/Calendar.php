@@ -34,7 +34,7 @@ class Calendar extends Section implements Initializable
     /**
      * @var string
      */
-    protected $title='Дати';
+    protected $title = 'Дати';
 
     /**
      * @var string
@@ -64,9 +64,13 @@ class Calendar extends Section implements Initializable
 //            })->setOrderable(function ($query, $direction) {
 //                $query->orderBy('created_at', $direction);
 //            })->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::datetime('date', 'Дата')->setFormat('d.m.Y')->setHtmlAttribute('class', 'text-center text-nowrap'),
+//            AdminColumn::datetime('date', 'Дата')->setFormat('d.m.Y')
+            AdminColumn::datetime('date', 'Дата')
+                ->setSearchCallback(function ($column, $query, $search) {
+                    return $query->orWhere('date', 'like', '%' . $search . '%');
+                })
+                ->setHtmlAttribute('class', 'text-center text-nowrap'),
             AdminColumn::lists('holidays.title', 'Cвята')->setHtmlAttribute('class', 'text-center'),
-            AdminColumn::text('typecalendar.title', 'Тип')->setHtmlAttribute('class', 'text-center text-nowrap'),
         ];
         $display = AdminDisplay::datatables()
             ->setName('firstdatatables')
@@ -89,11 +93,10 @@ class Calendar extends Section implements Initializable
         $form = AdminForm::card()->addBody([
             AdminFormElement::columns()->addColumn([
 
-                AdminFormElement::date('date', 'Дата')->required(),
-                AdminFormElement::select('typecalendar_id', 'Тип', \App\Models\Typecalendar::class)->setDisplay('title')->required(),
+                AdminFormElement::date('date', 'Дата')->unique('Не повино повторюватись')->required(),
 
                 AdminFormElement::multiselect('holidays', 'Свята для цього дня', \App\Models\Holiday::class)->setDisplay('title'),
-                AdminFormElement::checkbox('repeat','повторювати щороку'),
+                AdminFormElement::checkbox('repeat', 'повторювати щороку'),
                 AdminFormElement::text('title', 'Заголовок (SEO)'),
                 AdminFormElement::text('meta_title', 'meta_title(SEO)'),
                 AdminFormElement::textarea('meta_description', 'meta_description(SEO)'),

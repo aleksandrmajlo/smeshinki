@@ -20,6 +20,11 @@ class Holiday extends Model
         ];
     }
 
+    public function typecalendar()
+    {
+        return $this->belongsTo(Typecalendar::class);
+    }
+    
     public function calendars()
     {
         return $this->belongsToMany(Calendar::class);

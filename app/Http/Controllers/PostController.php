@@ -14,8 +14,6 @@ class PostController extends Controller
     {
         $limit = config('app.limit');
         $sort=  session('sort','rating');
-
-
         if($sort=='new_end'){
             return Post::orderBy('created_at','desc')->active()->paginate($limit);
         }elseif($sort=='end_new'){
@@ -24,7 +22,6 @@ class PostController extends Controller
         else{
             return Post::orderBy('rating_avg','desc')->active()->paginate($limit);
         }
-
     }
     // получить пользователя на странице календаря
     // и фаворитлв
@@ -59,28 +56,6 @@ class PostController extends Controller
             'isFav'=>$isFav,
             'user_id'=>$user_id,
             'calendars'=>$collect_calendars
-        ]);
-    }
-    /*
-     * рейтинг
-     */
-    public function addRating(Request $request)
-    {
-        $post_id = $request->post_id;
-        $rating = $request->rating;
-        $post = Post::find($post_id);
-        //
-        $total_rating = $post->total_rating + $rating;
-        $total_votes = $post->total_votes + 1;
-        $rating_avg = (float)$total_rating / $total_votes;
-
-        $post->total_rating = $total_rating;
-        $post->total_votes = $total_votes;
-        $post->rating_avg = $rating_avg;
-        $post->save();
-        return response()->json([
-            'total_votes' => $total_votes,
-            'rating_avg' => $rating_avg,
         ]);
     }
 }

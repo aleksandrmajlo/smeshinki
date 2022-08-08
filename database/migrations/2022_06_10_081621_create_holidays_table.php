@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-
+            $table->string('repetition')->nullable();
+            $table->integer('typecalendar_id')->unsigned()->nullable();
             $table->string('slug')->nullable();
             $table->text('meta_title')->nullable();
             $table->text('meta_description')->nullable();

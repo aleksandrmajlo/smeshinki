@@ -26,6 +26,10 @@ return new class extends Migration
             $table->text('meta_title')->nullable();
             $table->text('meta_description')->nullable();
 
+            $table->float('rating_avg')->default(0)->comment('средняя оценка');
+            $table->integer('total_votes')->default(0)->comment('количество оценок');
+            $table->integer('total_rating')->default(0)->comment('сумма оценок');
+
             $table->timestamps();
         });
     }

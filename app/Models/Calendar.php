@@ -38,10 +38,7 @@ class Calendar extends Model
         return $this->belongsToMany(Holiday::class);
     }
 
-    public function typecalendar()
-    {
-        return $this->belongsTo(Typecalendar::class);
-    }
+
 
     public function welcome()
     {

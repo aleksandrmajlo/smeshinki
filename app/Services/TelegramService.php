@@ -122,6 +122,11 @@ class TelegramService
     {
         file_put_contents(public_path() . "/log_my/tel_values.txt", $data . "\n", FILE_APPEND);
     }
+    // Записать  при логине
+    public static function putLogIn2($data)
+    {
+        file_put_contents(public_path() . "/log_my/tel_values2.txt", $data . "\n", FILE_APPEND);
+    }
 
     // Записать еще что нибуть
     public static function othnerLogIn($data)

@@ -1,10 +1,30 @@
 <template>
-    <div class="card position-relative" v-cloak>
-        <loading :active.sync="isLoading" :is-full-page="fullPage"/>
+    <div class="card position-relative oneAnectod" v-cloak>
+        <button
+            :disabled="disabled"
+            class="link_button leftMy buttonNot"
+            @click.prevent="top()" >
+            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        </button>
+        <button
+            :disabled="disabled"
+            class="link_button rightMy buttonNot"
+            @click.prevent="down()" >
+            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        </button>
         <div class="card-body">
             <h5 class="card-title text-center">{{ title }}</h5>
-            <div class="card-text text-left">
+            <div class="card-text text-left mb-2">
                 <span v-html="description"></span>
+            </div>
+            <div class=" mb-2  ">
+                <rating-like post_type="anecdote"
+                             :likes="likes"
+                             :total_votes="total_votes"
+                             :post_id="id"></rating-like>
+            </div>
+            <div class="text-center mb-2">
+                <a href="/anecdotes" class="btn btn-outline-primary">До анекдотів</a>
             </div>
         </div>
     </div>
@@ -12,35 +32,27 @@
 
 <script>
     import {eventBus} from "../app";
-    import Loading from "vue-loading-overlay";
-    import "vue-loading-overlay/dist/vue-loading.css";
-
     export default {
         name: "Anecdote",
         data() {
             return {
+                ids: [],// ид показанных анектодов
+                id: '',
                 title: "",
                 description: "",
-                ids: [],
-                isLoading: true,
-                fullPage: false,
+                total_votes: '',//
+                likes: {},
+                disabled:false
             };
-        },
-        components: {
-            Loading,
         },
         created() {
             this.getAnectod();
             eventBus.$on("anecdoteChange", () => {
-                console.clear()
-                console.log('anecdoteChange')
                 this.getAnectod();
             });
         },
         methods: {
-
             getAnectod() {
-                this.isLoading = true;
                 axios
                     .post("/getAnecdote", {
                         ids: this.ids,
@@ -48,20 +60,32 @@
                     .then((res) => {
                         this.title = res.data.anecdote.title;
                         this.description = res.data.anecdote.description;
+                        this.id = res.data.anecdote.id;
+                        this.total_votes = res.data.anecdote.total_votes;
+                        this.likes = res.data.anecdote.likes;
                         if (res.data.new_arr) {
                             this.ids = [];
                             this.ids.push(res.data.anecdote.id);
                         } else {
                             this.ids.push(res.data.anecdote.id);
                         }
+                        eventBus.$emit('changeDataRating',{});
                     })
                     .catch((err) => {
                         console.error(err);
                     })
                     .then(() => {
-                        this.isLoading = false;
+                        this.disabled=false;
                     });
             },
+            top(){
+               this.disabled=true;
+               this.getAnectod();
+            },
+            down(){
+                this.disabled=true;
+                this.getAnectod();
+            }
         },
     };
 </script>

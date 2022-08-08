@@ -25,9 +25,8 @@
                     <img src="/img/right-arrow.png"/>
                 </button>
             </div>
-
-            <div v-for="(item, index) in items" :key="item.id" class="mb-2 ">
-                <h3  class="text-center card-title">{{ item.title }}</h3>
+            <div v-for="(item, index) in items" :key="item.id" class="mb-5 WrapItems">
+                <h3 class="text-center card-title">{{ item.title }}</h3>
                 <p class="card-text mb-3">
                     <span v-html="item.text"></span>
                 </p>
@@ -59,23 +58,21 @@
                     <my-favorites :user_id="user_id" :post_id="item.id"></my-favorites>
                 </template>
 
-                <rating :rating_avg="item.rating_avg"
-                        :post_id="item.id"
-                        :total_votes="item.total_votes"
-                ></rating>
-
-                <span v-if="item.video">
+                <div class="col-lg-8 mb-2 mt-2 mx-auto text-center">
+                   <span v-if="item.video">
                      <share :url="loadVideo(item.video)" :title="item.show_title?item.title:''" :description="item.show_title?item.description:''"/>
-                </span>
-                <span v-else>
+                    </span>
+                    <span v-else>
                      <share :url="loadImg(item.photo)" :title="item.show_title?item.title:''" :description="item.show_title?item.description:''"/>
-                </span>
-<!--                <div class="mt-3 w-100" v-if="calendars.length>0">-->
-<!--                    <a :href="calendar_url(item.calendar_id)" class="btn  btn-outline-primary w-100">Перейти до дати {{calendar_date(item.calendar_id)}}</a>-->
-<!--                </div>-->
-                <hr class="myHr" />
+                    </span>
+                </div>
+                <div class="col-lg-8 mb-2 mx-auto ">
+                    <rating-like    post_type="post"
+                                    :likes="item.likes"
+                                    :total_votes ="item.total_votes"
+                                    :post_id="item.id"></rating-like>
+                </div>
             </div>
-            <!-- left right -->
             <button
                 class="link_button 3333 topMy"
                 :disabled="disabledTop"
@@ -83,9 +80,7 @@
             >
                 <img src="/img/top.png"/>
             </button>
-            <!-- left right -->
         </div>
-
     </div>
 </template>
 
@@ -112,10 +107,10 @@
                 isLoading: true,
                 fullPage: false,
 
-                user_id:false,
-                isFav:[],// массив фаворитов
+                user_id: false,
+                isFav: [],// массив фаворитов
 
-                calendars:[],// календарь
+                calendars: [],// календарь
 
             };
         },
@@ -126,7 +121,7 @@
         created() {
             this.getPost();
         },
-        mounted(){
+        mounted() {
             this.getUser();
         },
         methods: {
@@ -165,23 +160,23 @@
 
             },
             // получить пользователя
-            getUser(){
-               axios.get('/getUser')
-               .then(res => {
-                   this.user_id=res.data.user_id;
-                   this.isFav=res.data.isFav;
-                   this.calendars=res.data.calendars;
-               })
-               .catch(err => {
-                   console.error(err);
-               })
+            getUser() {
+                axios.get('/getUser')
+                    .then(res => {
+                        this.user_id = res.data.user_id;
+                        this.isFav = res.data.isFav;
+                        this.calendars = res.data.calendars;
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
             },
             // проверить или в фаворитах
-            inFav(post_id){
-               return this.isFav.includes(post_id)
+            inFav(post_id) {
+                return this.isFav.includes(post_id)
             },
             // установить урл каталога
-            calendar_url(calendar_id){
+            calendar_url(calendar_id) {
                 console.log()
                 const calendar = this.calendars.find((obj) => {
                     return obj.id === calendar_id;
@@ -189,8 +184,7 @@
                 return calendar.url;
             },
             // установить урл каталога
-            calendar_date(calendar_id){
-                console.log()
+            calendar_date(calendar_id) {
                 const calendar = this.calendars.find((obj) => {
                     return obj.id === calendar_id;
                 });

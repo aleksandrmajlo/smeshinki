@@ -1,7 +1,7 @@
 <template>
     <div class=" mb-3 mt-3">
         <div v-for="(item, index) in items" :key="item.id" class="mb-2 text-center">
-            <a :href="url+'#id'+item.id" class="text-center">{{ item.title }}</a>
+            <span  class="text-center">{{ item.title }}</span>
         </div>
         <div class="text-center">
             <p v-show="items.length<1" class="text-danger">Привітання немає</p>

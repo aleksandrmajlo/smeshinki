@@ -10,6 +10,7 @@ class Post extends Model
 {
     use HasFactory;
     use Sluggable;
+    protected $appends = ['likes'];
     public function sluggable(): array
     {
         return [
@@ -51,4 +52,18 @@ class Post extends Model
         }
         $this->attributes['meta_description'] = $meta_description;
     }
+
+    // кол-во лайков
+    public function getLikesAttribute($value){
+        $likes=\DB::table('count_likes')
+            ->where('post_type','post')
+            ->where('post_id',$this->id)
+            ->get();
+        $res=[];
+        foreach ($likes as $like){
+            $res[$like->like.'_n']=$like->count;
+        }
+        return $res;
+    }
+
 }

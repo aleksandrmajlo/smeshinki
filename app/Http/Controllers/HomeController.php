@@ -67,10 +67,11 @@ class HomeController extends Controller
     // получить даты календаря
     public function getCalendar(Request $request)
     {
-        $typecalendar_=$request->typecalendar;
-        $typecalendar=Typecalendar::find($typecalendar_);
+//        $typecalendar_=$request->typecalendar;
+//        $typecalendar=Typecalendar::find($typecalendar_);
+        $calendars=Calendar::all();
         $res = [];
-        foreach ($typecalendar->calendars as $calendar) {
+        foreach ($calendars as $calendar) {
             $date = $calendar->date;
             $date_ar = explode('-', $date);
             $res[] = [
@@ -88,12 +89,15 @@ class HomeController extends Controller
     public function getPost(Request $request)
     {
         $calendar_id = $request->calendar_id;
+        $typecalendar=(int)$request->typecalendar;
         $calendar=Calendar::find($calendar_id);
         $holidays = $calendar->holidays;
         $posts=collect();
         foreach ($holidays as $holiday){
-            foreach ($holiday->posts as $item){
-                $posts->push($item);
+            if($holiday->typecalendar->id==$typecalendar){
+                foreach ($holiday->posts as $item){
+                    $posts->push($item);
+                }
             }
         }
         return response()->json([
@@ -105,49 +109,31 @@ class HomeController extends Controller
 
     // получить записи для данного дня
     public function getPostToday(Request $request){
-       $typecalendar=$request->typecalendar;
+
+       $typecalendar=(int)$request->typecalendar;
+       $date=$request->date;
        $holidays=collect();
        $posts=collect();
        $url='';
-       $calendar=Calendar::where('typecalendar_id',$typecalendar)
-                           ->whereDate('date', Carbon::today())
+       $calendar=Calendar::whereDate('date', $date)
                            ->first();
+
        if($calendar){
            $holidays = $calendar->holidays;
-           $url=$calendar->url();
+           $url=$calendar->url;
            foreach ($holidays as $holiday){
-               foreach ($holiday->posts as $item){
-                   $posts->push($item);
+               if($holiday->typecalendar->id==$typecalendar){
+                   foreach ($holiday->posts as $item){
+                       $posts->push($item);
+                   }
                }
+
            }
        }
-
         return response()->json([
             'holidays'=>$holidays,
             'posts'=> $posts,
             'url'=> $url
         ]);
     }
-
-    // получить анедот
-    public function getAnecdote(Request $request)
-    {
-        $ids = $request->ids;
-        $count=Anecdote::count();
-        $new_arr=false;
-        if($count==count($ids)){
-            $ids=[];
-            $new_arr=true;
-        }
-        $anecdote = Anecdote::inRandomOrder()
-            ->whereNotIn('id', $ids)
-            ->first();
-
-        return response()->json([
-            'anecdote'=>$anecdote,
-            'new_arr'=>$new_arr
-        ]);
-    }
-
-
 }
