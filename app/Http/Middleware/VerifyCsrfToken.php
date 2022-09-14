@@ -16,6 +16,7 @@ class VerifyCsrfToken extends Middleware
         '/getPost',
         '/addWelcome',
         '/telegram/callback',
+        '/subscription',
         '/test',
     ];
 }

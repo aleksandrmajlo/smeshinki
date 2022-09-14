@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('welcome');
             $table->string('photo')->nullable();
             $table->boolean('status')->default(0);
+
             $table->timestamps();
         });
     }

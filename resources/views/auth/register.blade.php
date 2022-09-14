@@ -6,7 +6,6 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('auth.Register') }}</div>
-
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf
@@ -59,6 +58,25 @@
                             </div>
                         </div>
                     </form>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4"> </div>
+                    <div class="col-md-6">
+                        <a href="{{ route('facebook.login') }}" class="btn btn-facebook btn-user btn-block">
+                            <i class="fab fa-facebook-f fa-fw"></i>
+                            Увійти за допомогою Facebook
+                        </a>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4"> </div>
+                    <div class="col-md-6">
+                        <a href="{{ route('google.redirect') }}" class="btn btn-google btn-user btn-block">
+                            <i class="fab fa-google"></i>
+                            Увійти за допомогою Google
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

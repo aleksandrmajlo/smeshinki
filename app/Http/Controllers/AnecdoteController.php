@@ -14,7 +14,7 @@ class AnecdoteController extends Controller
     {
 //        $limit = config('app.limit');
         $limit =12;
-        $anecdotes = Anecdote::orderBy('created_at')->paginate($limit);
+        $anecdotes = Anecdote::orderBy('created_at','desc')->paginate($limit);
         meta()
             ->set('title', 'Анекдоти')
             ->set('description', 'Анекдоти');

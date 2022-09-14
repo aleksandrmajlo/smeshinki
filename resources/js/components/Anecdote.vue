@@ -1,5 +1,5 @@
 <template>
-    <div class="card position-relative oneAnectod" v-cloak>
+    <div class="card position-relative oneAnectod mb-5" v-cloak>
         <button
             :disabled="disabled"
             class="link_button leftMy buttonNot"
@@ -26,6 +26,13 @@
             <div class="text-center mb-2">
                 <a href="/anecdotes" class="btn btn-outline-primary">До анекдотів</a>
             </div>
+
+            <!-- <div class="text-center mb-2"> -->
+                 <!-- <a v-if="auth==1"  href="/login" class="btn btn-outline-primary">Підписатися на розсилання</a> -->
+                 <!-- <a v-if="auth==1" href="#" data-fancybox="dialog" data-src="#form_subscription" class="btn btn-outline-primary">Підписатися на розсилання</a> -->
+                 <!-- <a v-else
+                 href="#" data-fancybox="dialog" data-src="#form_subscription" class="btn btn-outline-primary">Підписатися на розсилання</a> -->
+            <!-- </div> -->
         </div>
     </div>
 </template>
@@ -45,6 +52,7 @@
                 disabled:false
             };
         },
+        props:['auth'],
         created() {
             this.getAnectod();
             eventBus.$on("anecdoteChange", () => {

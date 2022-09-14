@@ -135,11 +135,8 @@
         created() {
             this.countall = this.total_votes;
             eventBus.$on('changeDataRating', data => {
-                console.clear();
-                console.info('changeDataRating');
                 this.isRating=false;;
                 this.likes_=this.likes;
-
             })
         },
         methods: {

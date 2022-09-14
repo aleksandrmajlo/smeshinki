@@ -10,10 +10,11 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"/>
-
-    <link  rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css" />
+    <link  rel="stylesheet"  href="{{asset('libs/fancy/dist/fancybox.css')}}" />
+    <link  rel="stylesheet"  href="{{asset('libs/select2/css/select2.min.css')}}" />
     <link  href="{{ asset('css/mdb.min.css') }}" rel="stylesheet">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+
 </head>
 <body>
 <header>
@@ -29,27 +30,24 @@
             <div class="collapse navbar-collapse" id="navbarExample01">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item active">
-                        <a class="btn btn-outline-primary" data-fancybox="dialog" data-src="#formsend">Прислати своє привітання</a>
+                        @guest
+                            <a class="btn btn-outline-primary" href="{{route('login')}}?wecome=1">
+                                Прислати своє привітання
+                            </a>
+                        @else
+                            <a class="btn btn-outline-primary link-modal-js"
+                               href="#formsend"
+                               data-src="#formsend">Надіслати свій контент</a>
+                        @endguest
                     </li>
-                    <!--
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" rel="nofollow"
-                           target="_blank">Learn Bootstrap 5</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://mdbootstrap.com/docs/standard/" target="_blank">Download MDB UI KIT</a>
-                    </li>
-                     -->
                 </ul>
                 <ul class="  navbar-nav d-flex flex-row">
-                    <!-- Authentication Links -->
                     @guest
                         @if (Route::has('login'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('auth.Login') }}</a>
                             </li>
                         @endif
-
                         @if (Route::has('register'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('register') }}">{{ __('auth.Register') }}</a>
@@ -57,7 +55,6 @@
                         @endif
                     @else
                         <li class="nav-item dropdown">
-
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }}
                             </a>
@@ -80,24 +77,18 @@
                 </ul>
                 <ul class="navbar-nav d-flex flex-row">
                     <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" rel="nofollow"
-                           target="_blank">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="https://www.facebook.com/mdbootstrap" rel="nofollow" target="_blank">
+                        <a class="nav-link" href="https://www.facebook.com/smeshinki.net" rel="nofollow" target="_blank">
                             <i class="fab fa-facebook-f"></i>
                         </a>
                     </li>
                     <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="https://twitter.com/MDBootstrap" rel="nofollow" target="_blank">
-                            <i class="fab fa-twitter"></i>
+                        <a class="nav-link" href=" https://t.me/smeshinki_net" rel="nofollow" target="_blank">
+                            <i class="fab fa-telegram-plane"></i>
                         </a>
                     </li>
                     <li class="nav-item me-3 me-lg-0">
-                        <a class="nav-link" href="https://github.com/mdbootstrap/mdb-ui-kit" rel="nofollow" target="_blank">
-                            <i class="fab fa-github"></i>
+                        <a class="nav-link" href="https://instagram.com/smeshinki_net" rel="nofollow" target="_blank">
+                            <i class="fab fa-instagram"></i>
                         </a>
                     </li>
                 </ul>
@@ -117,21 +108,17 @@
 <footer class="bg-light text-lg-start">
     <div class="text-center py-4 align-items-center">
         <p>Слідкуйте за нами у соціальних мережах</p>
-        <a href="https://www.youtube.com/channel/UC5CF7mLQZhvx8O5GODZAhdA" class="btn btn-primary m-1" role="button"
-           rel="nofollow" target="_blank">
-            <i class="fab fa-youtube"></i>
-        </a>
-        <a href="https://www.facebook.com/mdbootstrap" class="btn btn-primary m-1" role="button" rel="nofollow"
+        <a href="https://www.facebook.com/smeshinki.net" class="btn btn-primary m-1" role="button" rel="nofollow"
            target="_blank">
             <i class="fab fa-facebook-f"></i>
         </a>
-        <a href="https://twitter.com/MDBootstrap" class="btn btn-primary m-1" role="button" rel="nofollow"
+        <a href="https://t.me/smeshinki_net" class="btn btn-primary m-1" role="button" rel="nofollow"
            target="_blank">
-            <i class="fab fa-twitter"></i>
+            <i class="fab fa-telegram"></i>
         </a>
-        <a href="https://github.com/mdbootstrap/mdb-ui-kit" class="btn btn-primary m-1" role="button" rel="nofollow"
+        <a href="https://instagram.com/smeshinki_net" class="btn btn-primary m-1" role="button" rel="nofollow"
            target="_blank">
-            <i class="fab fa-github"></i>
+            <i class="fab fa-instagram"></i>
         </a>
     </div>
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
@@ -139,8 +126,10 @@
         <a class="text-dark" href="/">Smeshinki</a>
     </div>
 </footer>
-@include('all.form')
 <script type="text/javascript" src="{{ asset('js/mdb.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+<script src="{{asset('libs/fancy/dist/fancybox.umd.js')}}"></script>
+<script src="{{asset('libs/select2/js/select2.min.js')}}"></script>
+@include('all.form')
+@include('all.form_subscription')
 </body>
 </html>

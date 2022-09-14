@@ -127,7 +127,8 @@ class CalendarController extends Controller
 
     public function calendar_parser_excel()
     {
-        $path = public_path() . '/excel/1.xlsx';
+//        $path = public_path() . '/excel/1.xlsx';
+        $path = public_path() . '/excel/2.xlsx';
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 
         $spreadsheet = $reader->load($path);
@@ -136,12 +137,16 @@ class CalendarController extends Controller
             if ($k > 0) {
                 if ($item[0]) {
                     $title = $item[1];
+                    if(is_null($title)){
+                        dump($item);
+                        continue;
+                    }
                     $count_holiday = Holiday::where('title_orig', $title)->count();
+
 
                     if ($count_holiday === 0) {
                         // если нету праздника с таким названием
                         // тип typecalendar_id
-
                         $type = $item[3];
                         $typecalendar_id = 3;
                         $typecalendar = Typecalendar::where('title', $type)
@@ -183,6 +188,8 @@ class CalendarController extends Controller
                         }
                         $holiday->calendars()->attach($calendar_id);
                     }
+
+
 
                 }
 

@@ -8,6 +8,11 @@
                     <div class="card-header">{{ __('Login') }}</div>
 
                     <div class="card-body">
+                        @if(request()->has('wecome') )
+                            <p class="text-info text-center">
+                                Для додавання контенту, будь ласка, авторизуйтесь або зареєструйтесь - це займе пару секунд.
+                            </p>
+                        @endif
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="row mb-3">
@@ -65,6 +70,7 @@
                             </div>
                         </form>
                     </div>
+
                     <div class="row mb-3">
                         <div class="col-md-4"> </div>
                         <div class="col-md-6">
@@ -83,35 +89,7 @@
                             </a>
                         </div>
                     </div>
-{{--                    <div class="row mb-3">--}}
-{{--                        <div class="col-md-4"> </div>--}}
-{{--                        <div class="col-md-6">--}}
-{{--                            <a href="{{ route('telegram.redirect') }}" class="btn btn-google btn-user btn-block">--}}
-{{--                                <i class="fab fa-telegram"></i>--}}
-{{--                                Увійти за допомогою Telegram--}}
-{{--                            </a>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-                    {{--
-                       <div class="row mb-3">
-                           <div class="col-md-4 "> </div>
-                           <div class="col-md-6">
-                          {!! Socialite::driver('telegram')->getButton() !!}
-                            <script async src="https://telegram.org/js/telegram-widget.js?19" data-telegram-login="smeshinki_login_bot" data-size="large" data-onauth="onTelegramAuth(user)" data-request-access="write"></script>
-                            <script type="text/javascript">
-                                function onTelegramAuth(user) {
-                                   // alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
-                                }
-                            </script>
-                            <script async src="https://telegram.org/js/telegram-widget.js?19"
-                                    data-telegram-login="smeshinki_login_bot" data-size="medium"
-                                    data-userpic="false"
-                                    data-auth-url="https://smeshinki.net/telegram/callback"
-                                    data-request-access="write"></script>
 
-                        </div>
-                    </div>
-                    --}}
                 </div>
             </div>
         </div>

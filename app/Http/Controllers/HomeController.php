@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subscription;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Anecdote;
@@ -50,18 +51,26 @@ class HomeController extends Controller
             else{
                 $posts=Post::orderBy('rating_avg','desc')->whereIn('id', $isFav)->get();
             }
+            // подписка
+            $user_id=Auth::user()->id;
+            $user_sub_count=Subscription::where('user_id',$user_id)
+                             ->whereNotNull('email_verified_at')
+                             ->count();
+            $user_sub=false;
+            if($user_sub_count>0){
+                $user_sub=true;
+            }
             return view('home',[
                 'posts' => $posts,
                 'url' => env('APP_URL'),
                 'sort'=>$sort,
                 'isFav' => $isFav,
-                'linkCatalog'=>1
+                'linkCatalog'=>1,
+                'user_sub'=>$user_sub
             ]);
         }else{
             return abort('403');
         }
-
-
     }
 
     // получить даты календаря

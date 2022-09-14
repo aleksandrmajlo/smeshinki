@@ -24,7 +24,7 @@ class Holiday extends Model
     {
         return $this->belongsTo(Typecalendar::class);
     }
-    
+
     public function calendars()
     {
         return $this->belongsToMany(Calendar::class);
@@ -52,4 +52,20 @@ class Holiday extends Model
         }
         $this->attributes['meta_description'] = $meta_description;
     }
+
+    /*
+     *  получить  дату
+     */
+    public function getDateAttribute($value){
+
+        $year=date("Y");
+        foreach ($this->calendars as $calendar){
+            $arr=explode('-',$calendar->date);
+            if($year==$arr[0]){
+                return  $arr[2].'.'.$arr[1].'.'.$arr[0];
+            }
+        }
+        return '';
+    }
+
 }

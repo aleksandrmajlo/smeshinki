@@ -67,7 +67,7 @@ Route::get('/getPosts', [App\Http\Controllers\PostController::class, 'getPosts']
 Route::get('/getUser', [App\Http\Controllers\PostController::class, 'getUser']);
 
 // получить анедоты
-Route::get('/anecdotes', [App\Http\Controllers\AnecdoteController::class, 'index']);
+Route::get('/anecdotes', [App\Http\Controllers\AnecdoteController::class, 'index'])->name('anecdotes.index');
 Route::get('/anecdote/{anecdote:slug}', [App\Http\Controllers\AnecdoteController::class, 'show']);
 // получить анедот рандомно
 Route::post('/getAnecdote', [App\Http\Controllers\AnecdoteController::class, 'getAnecdote']);
@@ -82,6 +82,7 @@ Route::post('/sort', [App\Http\Controllers\CalendarController::class, 'sort']);
 // отпавить сообщение
 Route::post('/addWelcome', [App\Http\Controllers\WelcomeController::class, 'addWelcome']);
 
+
 // парсер с телеги
 Route::post('/test', [App\Http\Controllers\WordController::class, 'test']);
 // парсер календаря
@@ -92,6 +93,16 @@ Route::get('/anecdotes_parser_photo', [App\Http\Controllers\AnecdoteController::
 
 // рейтинг лайки новый
 Route::post('/addRating', [App\Http\Controllers\LikeController::class, 'addRating']);
+
+// подписка subscription
+// активация
+Route::get('/subscription', [App\Http\Controllers\SubscriptionController::class, 'activation']);
+// получение  email
+Route::post('/subscription', [App\Http\Controllers\SubscriptionController::class, 'subscription']);
+// сама розсылка
+Route::get('/subscription_send', [App\Http\Controllers\SubscriptionController::class, 'send']);
+// подписка отписка пользователя
+Route::post('/user_subs', [App\Http\Controllers\SubscriptionController::class, 'user_subs'])->name('user_subs');
 
 // лайки  getLike
 // это не работает !!!!!!!!!

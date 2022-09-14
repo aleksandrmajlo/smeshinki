@@ -35,7 +35,7 @@ class Word extends Section implements Initializable
     /**
      * @var string
      */
-    protected $title = 'Записи з telegram';
+    protected $title = 'Світлини';
 
     /**
      * @var string

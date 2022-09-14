@@ -7,6 +7,7 @@
 // Bootstrap
 // @import '~bootstrap/scss/bootstrap';
 $color_link:rgb(14,82,193);
+$color_default: #4f4f4f;
 [v-cloak] {
     display: none;
   }
@@ -21,7 +22,6 @@ $color_link:rgb(14,82,193);
        padding-left: 40px;
        padding-right: 40px;
     }
-
     button.link_button{
         outline: none;
         border: none;
@@ -31,7 +31,6 @@ $color_link:rgb(14,82,193);
          top:50%;
          margin-top: -20px;
          cursor: pointer;
-        //  left: 0;
          img{
               max-width: 100%;
               height: auto;
@@ -48,7 +47,6 @@ $color_link:rgb(14,82,193);
         cursor: not-allowed;
     }
     .WrapLeftRight{
-        // visibility: hidden;
         button.link_button_lr{
             outline: none;
             border: none;
@@ -61,7 +59,6 @@ $color_link:rgb(14,82,193);
            }
         }
     }
-
 }
 .WrapCalendar{
      .card{
@@ -88,7 +85,6 @@ button:disabled {
   hr.myHr{
       height: 3px !important;
   }
-
   @media (min-width: 1140px) {
     .card{
         .bg-image{
@@ -98,9 +94,7 @@ button:disabled {
         }
 
     }
-
    }
-
 .WrapItems{
     box-shadow: 0px 15px 10px -15px rgba(0,0,0,.05);
     position: relative;
@@ -192,7 +186,9 @@ button.buttonNot{
         }
     }
 }
-
+a.link_default{
+    color:$color_default;
+}
 @media (max-width: 768px){
     .RatingLikePopper{
         .v-popper__wrapper{
