@@ -104,6 +104,8 @@ Route::get('/subscription_send', [App\Http\Controllers\SubscriptionController::c
 // подписка отписка пользователя
 Route::post('/user_subs', [App\Http\Controllers\SubscriptionController::class, 'user_subs'])->name('user_subs');
 
+// создание календаря на год
+Route::get('/create_csv_calendar',[\App\Http\Controllers\CalendarController::class,'create_csv_calendar']);
 // лайки  getLike
 // это не работает !!!!!!!!!
 //Route::post('/getLike', [App\Http\Controllers\LikeController::class, 'getLike']);

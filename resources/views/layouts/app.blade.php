@@ -32,7 +32,7 @@
                     <li class="nav-item active">
                         @guest
                             <a class="btn btn-outline-primary" href="{{route('login')}}?wecome=1">
-                                Прислати своє привітання
+                                Надіслати свій контент
                             </a>
                         @else
                             <a class="btn btn-outline-primary link-modal-js"

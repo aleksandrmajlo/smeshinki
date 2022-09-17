@@ -30,6 +30,7 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('calendar_id')->unsigned()->index();
             $table->integer('holiday_id')->unsigned()->index();
+            $table->integer('year')->default('2022');
             $table->unique(['calendar_id', 'holiday_id'], 'calendar_holiday');
             $table->timestamps();
         });

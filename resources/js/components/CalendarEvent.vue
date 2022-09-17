@@ -19,12 +19,17 @@
                 :masks="masks"
                 :attributes="attrs"
                 is-expanded
+                class="mb-2"
             />
-            <div class="typeCalendar mb-2">
+            <div class="typeCalendar mb-2 ">
                 <label>Тип:</label>
-                <select class="form-control" v-model="typecalendar">
+                <select class="form-control" v-model="typecalendar" >
                     <option v-for="(item,index) in datatypes" :key="item.id" :value="item.id">{{item.title}}</option>
                 </select>
+            </div>
+            <div class="typeCalendar mb-2">
+                  <a target="_blank" class="btn btn-outline-primary"
+                     :href="'/files/Smeshinki_'+typecalendar_title()+'_'+date.getFullYear()+'.csv'">Завантажити для імпорту в Google Calendar</a>
             </div>
         </div>
     </div>
@@ -69,13 +74,14 @@
         },
         mounted(){
             this.date=new Date();
+            this.typecalendar_title();
         },
         watch: {
             typecalendar(){
                 this.items=[];
                 this.holidays=[];
                 this.loadSetDate();
-
+                this.typecalendar_title()
             },
         },
         methods: {
@@ -171,7 +177,18 @@
                 let year=date.getFullYear();
                 res=nominative[day]+', '+d+' '+ months[month]+' '+year+ ' р.';
                 return res;
+            },
+
+            typecalendar_title(){
+                let title='';
+                this.datatypes.forEach(element => {
+                    if(element.id==this.typecalendar){
+                        title=element.title;
+                    }
+                });
+                return title;
             }
+
         },
     };
 </script>

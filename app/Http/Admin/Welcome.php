@@ -80,6 +80,18 @@ class Welcome extends Section implements Initializable
                     return '<div class="text-danger">Не опубліковано</div>';
                 }
             })->setHtmlAttribute('class', 'text-center'),
+            AdminColumn::custom("", function (\Illuminate\Database\Eloquent\Model $model){
+
+                return '
+                 <style type="text/css">
+                 .btn-create{
+                    display: none !important;
+                 }
+                 </style>
+                ';
+
+            })
+
         ];
         $display = AdminDisplay::datatables()
             ->setName('firstdatatables')
@@ -215,7 +227,8 @@ class Welcome extends Section implements Initializable
     public function onCreate($payload = [])
     {
 //        return $this->onEdit(null, $payload);
-        return abort('403');
+//        return abort('403');
+        return back();
     }
 
     /**

@@ -127,8 +127,8 @@ class CalendarController extends Controller
 
     public function calendar_parser_excel()
     {
-//        $path = public_path() . '/excel/1.xlsx';
-        $path = public_path() . '/excel/2.xlsx';
+
+        $path = public_path() . '/excel/3.xlsx';
         $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
 
         $spreadsheet = $reader->load($path);
@@ -137,13 +137,11 @@ class CalendarController extends Controller
             if ($k > 0) {
                 if ($item[0]) {
                     $title = $item[1];
-                    if(is_null($title)){
+                    if (is_null($title)) {
                         dump($item);
                         continue;
                     }
                     $count_holiday = Holiday::where('title_orig', $title)->count();
-
-
                     if ($count_holiday === 0) {
                         // если нету праздника с таким названием
                         // тип typecalendar_id
@@ -163,10 +161,10 @@ class CalendarController extends Controller
                         $holiday->description = $description;
                         $holiday->meta_title = $title;
                         $holiday->meta_description = $title;
-                        if($item[6]){
-                            $holiday->repetition=$item[6];
+                        if ($item[6]) {
+                            $holiday->repetition = $item[6];
                         }
-                         $holiday->save();
+                        $holiday->save();
 
                         $date_ar = $item[0];
                         $date_ar = explode(".", $date_ar);
@@ -190,13 +188,48 @@ class CalendarController extends Controller
                     }
 
 
-
                 }
 
             }
         }
 
 
+    }
+
+    public function create_csv_calendar()
+    {
+        $typecalendars = Typecalendar::all();
+        $th_year = Carbon::now()->year;
+        $APP_NAME = env('APP_NAME');
+        foreach ($typecalendars as $typecalendar) {
+            $csv_title = $APP_NAME . '_' . $typecalendar->title . '_' . $th_year . '.csv';
+
+            $filename = public_path("files/$csv_title");
+            $handle = fopen($filename, 'w+');
+            fputcsv($handle, [
+                "Subject",
+                "Start Date",
+                "All Day Event",
+                "Description",
+                "Private"
+            ]);
+            foreach ($typecalendar->holidays as $holiday) {
+                $calendar = $holiday->calendars()->where('year', $th_year)->first();
+                // если есть в  этом году  этот праздник
+                if ($calendar) {
+                    fputcsv($handle, [
+                        $holiday->title,
+                        $calendar->date,
+                        1,
+                        "<a href='https://smeshinki.net/holiday/". $holiday->slug ."'  >Дивитись на сайті Smeshinki</a>",
+                        0
+                    ]);
+                }
+
+            }
+            fclose($handle);
+
+        }
     }
 
 }
