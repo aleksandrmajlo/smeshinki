@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="typeCalendar mb-2">
-                  <a target="_blank" class="btn btn-outline-primary"
+                  <a v-if="date!=''" target="_blank" class="btn btn-outline-primary"
                      :href="'/files/Smeshinki_'+typecalendar_title()+'_'+date.getFullYear()+'.csv'">Завантажити для імпорту в Google Calendar</a>
             </div>
         </div>

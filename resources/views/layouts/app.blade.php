@@ -104,6 +104,7 @@
             </section>
         </div>
     </main>
+    <scroll-top></scroll-top>
 </div>
 <footer class="bg-light text-lg-start">
     <div class="text-center py-4 align-items-center">

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h5>Поділиться:</h5>
+        <h5>Поділитися:</h5>
         <div class="ShareWrap d-flex flex-wrap  justify-content-between">
             <ShareNetwork
                 network="facebook"

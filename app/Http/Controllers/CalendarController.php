@@ -221,7 +221,7 @@ class CalendarController extends Controller
                         $holiday->title,
                         $calendar->date,
                         1,
-                        "<a href='https://smeshinki.net/holiday/". $holiday->slug ."'  >Дивитись на сайті Smeshinki</a>",
+                        "<a href='https://smeshinki.net/holiday/". $holiday->slug ."'  >Подивитись привітання до свята</a>",
                         0
                     ]);
                 }

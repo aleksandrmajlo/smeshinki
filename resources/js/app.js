@@ -36,6 +36,9 @@ Vue.component('PostsAll', require('./components/PostsAll.vue').default);
 // Vue.component('LikeComponent', require('./components/loop/LikeComponent.vue').default);
 Vue.component('RatingLike', require('./components/loop/RatingLike.vue').default);
 
+// прокрутка верх ScrollTopComponent.vue
+Vue.component('ScrollTop', require('./components/ScrollTop.vue').default);
+
 export const eventBus = new Vue();
 const app = new Vue({
     el: '#app',

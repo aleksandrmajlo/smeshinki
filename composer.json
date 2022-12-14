@@ -6,7 +6,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "abraham/twitteroauth": "^4.0",
+        "atymic/twitter": "^3.1",
         "azate/laravel-telegram-login-auth": "^2.2",
+        "coderjerk/bird-elephant": "^0.5.0",
         "cviebrock/eloquent-sluggable": "^9.0",
         "f9webltd/laravel-meta": "^1.7",
         "fabpot/goutte": "^4.0",

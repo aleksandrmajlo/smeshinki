@@ -51,9 +51,6 @@ class SubscriptionController extends Controller
             meta()
                 ->set('title', __('Дякую за підписку'))
                 ->set('description', __('Дякую за підписку'));
-//            $subscription->email_verified_at = Carbon::now();
-//            $subscription->updated_at = null;
-//            $subscription->save();
             \DB::table('subscriptions')
                 ->where('remember_token', $activation)
                 ->update([

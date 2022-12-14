@@ -28,6 +28,7 @@ class SubscriptionSend extends Mailable
      */
     public function build()
     {
-        return $this->subject(env('APP_NAME').' Розсилка ')->view('mail.subscription_send');
+//        return $this->subject(env('APP_NAME').' Розсилка ')->view('mail.subscription_send');
+        return $this->subject('Нові приколи, розсилка')->view('mail.subscription_send');
     }
 }

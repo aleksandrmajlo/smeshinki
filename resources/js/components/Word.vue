@@ -1,28 +1,10 @@
 <template>
     <div class="WrapContent">
-        <loading :active.sync="isLoading" :is-full-page="fullPage"/>
+<!--        <loading :active.sync="isLoading" :is-full-page="fullPage"/>-->
         <div class="card" v-cloak>
-
-           <!--
-           <div class="WrapLeftRight d-flex justify-content-between mb-3 ">
-                <button
-                    class="link_button_lr leftMy"
-                    :disabled="disabledTop"
-                    @click.prevent="top()"
-                >
-                    <img src="/img/left-arrow.png"/>
-                </button>
-                <button
-                    class="link_button_lr rightMy"
-                    :disabled="disabledDown"
-                    @click.prevent="down()"
-                >
-                    <img src="/img/right-arrow.png"/>
-                </button>
-            </div>
-             -->
-            <div class="PaginationMy text-center mb-3">Показано {{items.length}} публікацій з {{total}}</div>
-            <div class="WrapItems mb-5 " v-for="item,ind in items" :key="item.id">
+            <div class="PaginationMy text-center mb-3">Показано {{ items.length }} публікацій з {{ total }}</div>
+            <div class="WrapItems mb-5 " v-for="item, ind in items" :key="item.id">
+                <!--
                 <template v-if="ind==0">
                     <button
                          class="link_button_lr leftMy"
@@ -39,51 +21,50 @@
                      <i class="fa fa-arrow-right" aria-hidden="true"></i>
                     </button>
                 </template>
-                <div
-                    v-show="item.photo"
-                    class="bg-image hover-overlay ripple text-center"
-                    data-mdb-ripple-color="light">
+                -->
+                <div v-show="item.photo" class="bg-image hover-overlay ripple text-center"
+                     data-mdb-ripple-color="light">
                     <img :src="loadImg(item.photo)" class="img-fluid" rel="preload"/>
                     <a data-fancybox :href="loadImg(item.photo)">
-                        <div
-                            class="mask"
-                            style="background-color: rgba(251, 251, 251, 0.15)"
-                        ></div>
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15)"></div>
                     </a>
                 </div>
                 <div class="player-container" v-if="item.video">
-                    <vue-core-video-player
-                        :autoplay="false"
-                        :src="loadVideo(item.video)"
-                    ></vue-core-video-player>
+                    <vue-core-video-player :autoplay="false" :src="loadVideo(item.video)"></vue-core-video-player>
                 </div>
                 <div class="card-body mb-2" v-show="item.show_title">
-                    <h5 v-show="item.title.search('Telegram')==-1" class="card-title">{{ item.title }}</h5>
+                    <h5 v-show="item.title.search('Telegram') == -1" class="card-title">{{ item.title }}</h5>
                     <span v-html="item.description"></span>
                 </div>
                 <div class="col-lg-8 mb-2 mt-2 mx-auto text-center">
                     <template v-if="item.video">
-                        <share :url="loadVideo(item.video)" :title="item.show_title?item.title:''" :description="item.show_title?item.description:''"/>
+                        <share :url="loadVideo(item.video)" :title="item.show_title ? item.title : ''"
+                               :description="item.show_title ? item.description : ''"/>
                     </template>
                     <template v-else>
-                        <share :url="loadImg(item.photo)" :title="item.show_title?item.title:''" :description="item.show_title?item.description:''"/>
+                        <share :url="loadImg(item.photo)" :title="item.show_title ? item.title : ''"
+                               :description="item.show_title ? item.description : ''"/>
                     </template>
                 </div>
                 <div class="col-lg-8 mb-2 mx-auto ">
-                    <rating-like post_type="word"
-                                 :likes="item.likes"
-                                 :total_votes="item.total_votes"
+                    <rating-like post_type="word" :likes="item.likes" :total_votes="item.total_votes"
                                  :post_id="item.id"></rating-like>
                 </div>
             </div>
             <!-- left right -->
-            <div class="PaginationMy text-center mb-3">Показано {{items.length}} публікацій з {{total}}</div>
+            <div id="bottomblock" class="PaginationMy text-center mb-3">Показано {{ items.length }} публікацій з {{ total }}</div>
+           <div style="position:relative;width: 100%;height: 60px;">
+               <loading :active.sync="isLoading" :is-full-page="false"   loader="dots"  />
+           </div>
+
+            <!--
             <div id="WrapLeftRight" class="WrapLeftRight d-flex justify-content-center mb-3 ">
                 <button :disabled="disabledTen" class="btn btn-primary"
                         @click.prevent="showTen"
                         href="#">Показати ще 10
                 </button>
             </div>
+            -->
         </div>
     </div>
 </template>
@@ -114,6 +95,7 @@
 
                 isLoading: true,
                 fullPage: false,
+                block_get_word: false
 
             };
         },
@@ -125,11 +107,32 @@
             this.getWord();
         },
         mounted() {
+            let self = this;
+            setTimeout(() => {
+                var observer = new IntersectionObserver(function (entries) {
+                    if (entries[0]['isIntersecting'] === true) {
+                        if (entries[0]['intersectionRatio'] === 1) {
+                            setTimeout(()=>{
+                                self.getWord('ten');
+                                self.block_get_word=true;
+                                console.log('Target is fully visible in screen');
+                            },500)
+                        }
+                    } else {
+                        console.log('Target is not visible in screen');
+                    }
+                }, {threshold: [0, 0.5, 1]});
+
+                observer.observe(document.querySelector("#bottomblock"));
+            }, 2000)
         },
         computed: {},
         methods: {
             // получить
             getWord(type) {
+                if(this.block_get_word){
+                    return 1;
+                }
                 this.isLoading = true;
                 axios
                     .get("/words", {
@@ -140,7 +143,6 @@
                         }
                     })
                     .then((res) => {
-
                         this.items = res.data.words;
                         this.firstId = res.data.firstId;
                         this.lastId = res.data.lastId;
@@ -148,13 +150,15 @@
                         this.lastIdCol = res.data.lastIdCol;
                         this.total = res.data.count
                         this.setDisabled();
-
                     })
                     .catch((err) => {
                         console.error(err);
                     })
                     .then(() => {
                         this.isLoading = false;
+                        setTimeout(()=>{
+                            this.block_get_word=false;
+                        },500)
                     });
             },
             // вверх

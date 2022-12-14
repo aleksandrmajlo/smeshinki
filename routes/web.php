@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use Telegram\Bot\Laravel\Facades\Telegram;
 use \App\Services\TelegramService;
 
+
+
+
+
 //use Illuminate\Support\Facades\Artisan;
 //Artisan::call('cache:clear');
 //Artisan::call('route:clear');
@@ -134,8 +138,9 @@ Route::prefix('google')->name('google.')->group( function(){
     Route::get('callback', [App\Http\Controllers\GoogleController::class, 'callback'])->name('callback');
 });
 
-//Route::get('redirect', [SocialController::class, 'redirect'])>name('redirect');
-//Route::get('callback', [SocialController::class, 'callback'])->name('callback');
+//твиттер медиа крон
+Route::get('twitter_media', [App\Http\Controllers\TwitterController::class, 'export']);
+
 
 Auth::routes();
 
